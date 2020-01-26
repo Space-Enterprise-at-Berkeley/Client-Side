@@ -1,4 +1,5 @@
 # Client-Side
+Space-Enterprise-at-Berkeley/Sensor-Suite
 
 ## Setup:
 We're using the Teensy 4.0 board. Setup the environment according to the instructions here:
