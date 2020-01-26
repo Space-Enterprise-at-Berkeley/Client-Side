@@ -1,5 +1,5 @@
 # Client-Side
-Space-Enterprise-at-Berkeley/Sensor-Suite
+All the client side code for sensors, valves, IMUs and the rest of the fun stuff.
 
 ## Setup:
 We're using the Teensy 4.0 board. Setup the environment according to the instructions here:
