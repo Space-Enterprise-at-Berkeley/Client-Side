@@ -1,5 +1,4 @@
-# Template-Repo
-Template repository for new repos at SEB.
+# Client-Side
 
 ## Setup:
 We're using the Teensy 4.0 board. Setup the environment according to the instructions here:
