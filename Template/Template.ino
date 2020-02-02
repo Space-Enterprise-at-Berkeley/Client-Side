@@ -1,6 +1,6 @@
 /*
-  Template.ino - This is the brain of SEB rockets.
-  Created by Shao-Qian Mah, Jan 25, 2020.
+  Template.ino - Template for Client side microcontroller code. 
+  Created by SQ Mah, Jan 25, 2020.
 */
 
 // ~~~~~~~~~~~~~~~~~~ Serial Config - Arduino Pro Mini ~~~~~~~~~~~~~~~~~~
@@ -23,12 +23,14 @@
 // Change this to the polling rate as mentioned in the datasheet. This is in HERTZ.
 // Set to 0 to maximize based on the loop speed, this would be useful for clients that only accept commands.
 #define POLLING_RATE_HZ 0
+#define SENSOR_INPUT_PIN 8
 
 // ~~~~~~~~~~~~~~~~~~ Packet Config ~~~~~~~~~~~~~~~~~~
 #define STARTCHAR '('
 #define ENDCHAR ')'
 
 long lastUpdate = millis();
+String response = "";
 
 void setup() {
   // Setup serials
@@ -37,10 +39,11 @@ void setup() {
   // Allow control of RS485 pins.
   pinMode(RSCONTROL, OUTPUT);
   digitalWrite(RSCONTROL, LOW);
+  pinMode(SENSOR_INPUT_PIN, INPUT);
 }
 
 void loop() {
-  String data = "THIS SOME PLACEHOLDER DATA! Get real data based on the current sensor";
+  int data = digitalRead(SENSOR_INPUT_PIN);
   long currentTime = millis();
   if ((currentTime - lastUpdate) >= (1000 / POLLING_RATE_HZ)) {
     lastUpdate = currentTime;
@@ -51,7 +54,7 @@ void loop() {
     String packet = readPacket(MY_ID, millis(), MAXCHARS, TIMEOUTMILLIS);
     if (packet.length() != 0) {
       // Valid packet received, send data.
-      String transmitPacket = "("+ idToString(MY_ID) + data + ")";
+      String transmitPacket = "("+ idToString(MY_ID) + response + ")";
       internalTransmit(&transmitPacket);
     }
   }
