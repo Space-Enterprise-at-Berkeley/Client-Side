@@ -1,6 +1,8 @@
 # Client-Side
 All the client side code for sensors, valves, IMUs and the rest of the fun stuff.
 
+*Duplicate the Template folder for handling a new sensor type.*
+
 ## Setup:
 We're using the Teensy 4.0 board. Setup the environment according to the instructions here:
 https://www.pjrc.com/teensy/td_download.html
