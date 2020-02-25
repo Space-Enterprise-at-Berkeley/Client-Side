@@ -36,6 +36,7 @@
 #define POLLING_RATE_HZ 400
 #define SENSOR_INPUT_PIN 8
 #define SEALEVELPRESSURE_HPA (1013.25)
+
 //Uncomment one of the following three lines to fit chosen protocol+wiring
 //Adafruit_BMP3XX bmp; //I2C
 Adafruit_BMP3XX bmp(BMP_CS); // hardware SPI
@@ -51,7 +52,6 @@ Adafruit_BMP3XX bmp(BMP_CS); // hardware SPI
 long lastUpdate = millis();
 bool atApogee(int baroReading);
 String response = "";
-
 
 void setup() {
   // Setup serials
@@ -75,7 +75,6 @@ void setup() {
   bmp.setPressureOversampling(BMP3_OVERSAMPLING_8X);
   bmp.setIIRFilterCoeff(BMP3_IIR_FILTER_COEFF_3);
   bmp.setOutputDataRate(BMP3_ODR_50_HZ);
-
 }
 
 void loop() {
@@ -85,48 +84,16 @@ void loop() {
     lastUpdate = currentTime;
     float altitude = bmp.readAltitude(SEALEVELPRESSURE_HPA);
    // float filtered_alt = kalmanFilter(altitude);
-    
-    response = atApogee(altitude)? "true": "false";
+    // response = atApogee(altitude)? "true": "false";
   }
   //Listen for signals over the RS485.
   while (INTERNALSERIAL.available() > 0) {
     String packet = readPacket(MY_ID, millis(), MAXCHARS, TIMEOUTMILLIS);
     if (packet.length() != 0) {
       // Valid packet received, send data.
-      String transmitPacket = "("+ idToString(MY_ID) + response + ")";
+      String transmitPacket = "("+ idToString(MY_ID) + String(altitude) + ")";
       internalTransmit(&transmitPacket);
     }
   }
 }
 
-float previousAltitude[3] = {0,0,0};
-long previousAltTimes[3];
-int altIndex = 0;
-
-//upward is positive.
-
-bool atApogee(int currAltitude){
-  previousAltitude[altIndex] = currAltitude;
-  previousAltTimes[altIndex] = millis();
-  altIndex++;
-  altIndex = altIndex % 3;
-  //better check than this????
-  return (currAltitude < previousAltitude[altIndex] && previousAltitude[altIndex] < previousAltitude[(altIndex+1)%3]);     
-}
-
-float deltaT = 0;
-float velocity(){
-  deltaT = previousAltTimes[altIndex] - previousAltTimes[(altIndex-1)%3];
-  return (previousAltitude[altIndex] - previousAltitude[(altIndex-1)%3]) / deltaT;
-}
-
-float previous = 0;
-/* float kalmanfilter(float currReading){
-  float estimate = previous + velocity()*deltaT - 4.9*deltaT**2
-  float resid = currReading - estimate;
-  k = abs(resid / (resid + 1));
-  float finalEstimate = estimate + k*resid;
-  previous = finalEstimate; 
-  return finalEstimate;
-}
-*/
