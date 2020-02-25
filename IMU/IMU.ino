@@ -1,5 +1,5 @@
 /*
-  Template.ino - Template for Client side microcontroller code. 
+  IMU.ino - Client side IMU interfacing code. 
   Created by SQ Mah, Jan 25, 2020.
 */
 
