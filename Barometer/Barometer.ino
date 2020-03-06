@@ -83,9 +83,14 @@ void loop() {
   long currentTime = millis();
   if ((currentTime - lastUpdate) >= (1000 / POLLING_RATE_HZ)) {
     lastUpdate = currentTime;
+<<<<<<< HEAD
     altitude = bmp.readAltitude(SEALEVELPRESSURE_HPA);
     Serial.println(altitude);
     // float filtered_alt = kalmanFilter(altitude);
+=======
+    float altitude = bmp.readAltitude(SEALEVELPRESSURE_HPA);
+   // float filtered_alt = kalmanFilter(altitude);
+>>>>>>> 70a8a8854745ece26e81b0edfd75ab3825cbd6c9
     // response = atApogee(altitude)? "true": "false";
   }
   //Listen for signals over the RS485.
@@ -93,9 +98,17 @@ void loop() {
     String packet = readPacket(MY_ID, millis(), MAXCHARS, TIMEOUTMILLIS);
     if (packet.length() != 0) {
       // Valid packet received, send data.
+<<<<<<< HEAD
       String transmitPacket = "(" + idToString(MY_ID) + String(altitude) + ")";
       Serial.println("Sending data");
+=======
+      String transmitPacket = "("+ idToString(MY_ID) + String(altitude) + ")";
+>>>>>>> 70a8a8854745ece26e81b0edfd75ab3825cbd6c9
       internalTransmit(&transmitPacket);
     }
   }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 70a8a8854745ece26e81b0edfd75ab3825cbd6c9
