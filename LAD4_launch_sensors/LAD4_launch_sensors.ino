@@ -34,8 +34,6 @@ Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28);
 File file;
 
 long lastUpdate = millis();
-bool atApogee(int baroReading);
-String response = "";
 float alt;
 float xacc;
 float yacc;
@@ -76,7 +74,8 @@ void setup() {
     bno.setExtCrystalUse(true);
     
   file = SD.open("lad4.txt", O_CREAT | O_WRITE);
-
+  file.println("time, altitude, acceleration_x, acceleration_y, acceleration_z");
+  
   // Set up oversampling and filter initialization
   bmp.setTemperatureOversampling(BMP3_OVERSAMPLING_8X);
   bmp.setPressureOversampling(BMP3_OVERSAMPLING_4X);
@@ -86,7 +85,17 @@ void setup() {
   SPI.begin();
 }
 
+#define dataBufferLength 30
+char dataBuffer[dataBufferLength];
+int buffer_i = 0;
+
+String packet;
+
 void loop() { 
+
+  if(!file){
+    file = SD.open("lad4.txt", O_CREAT | O_WRITE);
+  }
 
   if (! bmp.performReading()) {
     Serial.println("Barometer Failed to perform reading :(");
@@ -109,13 +118,20 @@ void loop() {
     zacc = euler.z();
   }
   
-  file = SD.open("lad4.txt", O_CREAT | O_WRITE);
 
-  String packet = String(alt) + " , " + String(xacc) + " , " + String(yacc) + " , " + String(zacc);
-  file.println(packet);
-  Serial.println(packet);
+  //packet = String(millis()) + "," + String(alt) + " , " + String(xacc) + " , " + String(yacc) + " , " + String(zacc);
+  sprintf(dataBuffer, "%lu,%f,%f,%f,%f", millis(), alt, xacc, yacc, zacc);
+  file.println(dataBuffer);
+  //Serial.println(dataBuffer);
+  buffer_i++;
+      
+  if((buffer_i % dataBufferLength / 2) == 0){
+      file.flush();
+      if(buffer_i % 2 * dataBufferLength == 0){
+        file.close();
+        buffer_i = buffer_i % dataBufferLength;
+      }
+  }
 
-  file.flush();
-  file.close();
 
 }
