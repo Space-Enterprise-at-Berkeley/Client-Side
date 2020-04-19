@@ -125,9 +125,9 @@ void loop() {
   //Serial.println(dataBuffer);
   buffer_i++;
       
-  if((buffer_i % dataBufferLength / 2) == 0){
+  if((buffer_i % 2* dataBufferLength) == 0){
       file.flush();
-      if(buffer_i % 2 * dataBufferLength == 0){
+      if(buffer_i % 10 * dataBufferLength == 0){
         file.close();
         buffer_i = buffer_i % dataBufferLength;
       }
