@@ -1,45 +1,34 @@
 # Client-Side
 All the client side code for sensors, valves, IMUs and the rest of the fun stuff.
 
-*Duplicate the Template folder for handling a new sensor type.*
-
 ## Setup:
-We're using the Teensy 4.0 board. Setup the environment according to the instructions here:
-https://www.pjrc.com/teensy/td_download.html
 
-### Windows users:
-1. Make sure git is installed with symlink support
+Download the [Arduino IDE](https://www.arduino.cc/en/Main/Software).
 
-During the install of git on Windows, enable symbolic links:
+We use the Teensy 4.0 board in addition to vanilla arduino boards. Setup the environment according to the [instructions here](https://www.pjrc.com/teensy/td_download.html).
 
-<img src="https://i.stack.imgur.com/rQF1w.png" width="300"/>
+## Contribution
 
-2. Tell Bash to create hardlinks instead of symlinks
+### Client Boards
 
-Edit: `(git folder)/etc/bash.bashrc` and add to bottom: `MSYS=winsymlinks:nativestrict`
+*Duplicate the Template folder for a new client board.*
 
-3. Set git config to use symlinks
-```bash
-git config core.symlinks true
-```
-or
+### Sensors
 
-```bash
-git clone -c core.symlinks=true <URL>
-```
-NOTE: I have tried adding this to the global git config and at the moment it is not working for me so I recommend adding this to each repo...
+The template code houses the client side communications protocol for our systems.
 
-4. Pull the repo
+Each sensor has its own `.h` file which can be included in any version of a client
+code. The only requirement is that you provide a function of the form `read_data()`
+that returns a struct with the current time and the sensor reading.
 
-NOTE: Unless you have enabled developer mode in the latest version of Windows 10, you need to run bash as **administrator** to create symlinks.
+When you submit a pull request, include the average time your function takes in microseconds.
 
-5. Reset all Symlinks (optional) If you have an existing repo, or are using submodules you may find that the symlinks are not being created correctly so to refresh all the symlinks in the repo you can run these commands.
+NOTE: This architecture is borrowed from McGill Rocket Team. See [here](https://github.com/liurichard95/mrt-avionics) 
+for their documentation.
 
-```bash
-find -type l -delete
-git reset --hard
-```
-NOTE: This will reset any changes since last commit so make sure you have committed first.
-git reset --hard
-```
-NOTE: This will reset any changes since last commit so make sure you have committed first
+### Submitting
+
+Do all of your development on a feature branch named along the lines of `<your-name>_<sensor-name>`.
+Try to commit frequently with descriptive messages. When you're done, push your code to your branch,
+submit a pull request into `master` and request a review from at least one other person
+on the team.
