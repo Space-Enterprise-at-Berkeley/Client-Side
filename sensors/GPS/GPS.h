@@ -4,7 +4,8 @@
 */
 
 #include <Adafruit_GPS.h>
-#include <SoftwareSerial.h>
+
+using namespace std{
 
 
 class GPS {
@@ -15,12 +16,5 @@ class GPS {
     read_data();
   private:
     uint8_t commMethod; // 1 for HardwareSerial, 2 for SoftwareSerial, 3 for I2c, 4 for SPI
-
-
+    AdaFruit_GPS _gps;
 }
-
-GPS::GPS(HardwareSerial *ser){
-
-}
-
-Adafruit_GPS GPS(&GPSSerial);
