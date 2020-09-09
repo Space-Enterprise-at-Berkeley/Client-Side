@@ -3,6 +3,9 @@
 int Address = 8;
 int sensorNum = 0;
 
+//function pointer
+void (*generalFunc)(float*);
+
 void setup() {
   Wire.begin(Address);           // join i2c bus with address #8
   Wire.onRequest(requestEvent); // register event
@@ -21,11 +24,7 @@ union floatArrToBytes {
 
 void requestEvent() {
   float data[6] = {0,0,0,0,0,0};
-  if (sensorNum == 0) {
-    getReading0(data);
-  } else if (sensorNum == 1) {
-    getReading1(data);
-  }
+  generalFunc(data);
   for (int i=0; i<6; i++) {
     farrbconvert.sensorReadings[i] = data[i];
   }
@@ -35,6 +34,11 @@ void requestEvent() {
 void updateSensorNum(int howMany) {
   while (!Wire.available());
   sensorNum = Wire.read();
+  if (sensorNum == 0) {
+    generalFunc = &getReading0;
+  } else if (sensorNum == 1) {
+    generalFunc = &getReading1;
+  }
 }
 
 void getReading0(float data[6]) {
