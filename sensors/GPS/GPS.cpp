@@ -1,31 +1,78 @@
+/*
+  GPS.cpp - A c++ library to interface with the Arduino Ultimate GPS MTK3339.
+  Intended to be used in I2C mode.
+  Created by Vamshi Balanaga, Aug 21, 2020.
+*/
+#include "GPS.h"
 
-#include <GPS.h>
+/*
+#define TIMER_INTERRUPT_DEBUG      0
+
+#define USE_TIMER_1     true
+#define USE_TIMER_2     true
+#define USE_TIMER_3     false
+#define USE_TIMER_4     false
+#define USE_TIMER_5     false
+
+#include "TimerInterrupt.h"
+
+Above should go into Brain ino For E1.
+*/
 
 #define GPSECHO false
 
 GPS::GPS(HardwareSerial *ser){
   AdaFruit_GPS _gps(ser);
+  commMethod = 1;
   init();
 }
 
 GPS::GPS(TwoWire *theWire){
   AdaFruit_GPS _gps(theWire);
+  commMethod = 3;
   init();
 }
 
 GPS::GPS(SPIClass *theSPI, int8_t cspin){
   Adafruit_GPS _gps(theSPI, cspin);
+  commMethod = 4;
   init();
 }
 
-void init(){
+void GPS::init(){
   _gps.begin(9600);
 
   _gps.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
   _gps.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // 1 Hz update rate
   _gps.sendCommand(PGCMD_ANTENNA);
+
+  delay(1000);
 }
 
-int GPS::read_data(){
-  _gps.read();
+bool GPS::start_read_interrupt(TimerInterrupt *timer) {
+  return timer.attachInterruptInterval(1000, _gps.read)); // 1000 ms delay matching 1Hz frequency
+}
+
+bool GPS::data_available(){
+  return _gps.newNMEAreceived();
+}
+
+bool GPS::got_satellite_fix(){
+   return _gps.fix;
+}
+
+void GPS::read_position_data(float *data){
+  // _gps.read(); should be called in interrupt now.
+  data[0] = _gps.latitudeDegrees;
+  data[1] = _gps.longitudeDegrees;
+}
+
+/**
+ * Define this in advance. Need to be agreed on by everyone.
+ */
+void GPS::read_auxilliary_data(float *data) {
+  // _gps.read(); should be called in interrupt now.
+  data[0] = _gps.altitude;
+  data[1] = _gps.speed;
+  data[2] = _gps.angle;
 }
