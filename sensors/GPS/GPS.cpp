@@ -4,7 +4,7 @@
   Created by Vamshi Balanaga, Aug 21, 2020.
 */
 #include "GPS.h"
-
+// ======================================NEED TO TEST ==========================
 /*
 #define TIMER_INTERRUPT_DEBUG      0
 
@@ -49,19 +49,19 @@ void GPS::init(){
   delay(1000);
 }
 
-bool GPS::start_read_interrupt(TimerInterrupt *timer) {
+bool GPS::startReadInterrupt(TimerInterrupt *timer) {
   return timer.attachInterruptInterval(1000, _gps.read)); // 1000 ms delay matching 1Hz frequency
 }
 
-bool GPS::data_available(){
+bool GPS::dataAvailable(){
   return _gps.newNMEAreceived();
 }
 
-bool GPS::got_satellite_fix(){
+bool GPS::gotSatelliteFix(){
    return _gps.fix;
 }
 
-void GPS::read_position_data(float *data){
+void GPS::readPositionData(float *data){
   // _gps.read(); should be called in interrupt now.
   data[0] = _gps.latitudeDegrees;
   data[1] = _gps.longitudeDegrees;
@@ -70,7 +70,7 @@ void GPS::read_position_data(float *data){
 /**
  * Define this in advance. Need to be agreed on by everyone.
  */
-void GPS::read_auxilliary_data(float *data) {
+void GPS::readAuxilliaryData(float *data) {
   // _gps.read(); should be called in interrupt now.
   data[0] = _gps.altitude;
   data[1] = _gps.speed;
