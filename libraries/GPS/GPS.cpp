@@ -65,6 +65,7 @@ void GPS::readPositionData(float *data){
   // _gps.read(); should be called in interrupt now.
   data[0] = _gps.latitudeDegrees;
   data[1] = _gps.longitudeDegrees;
+  data[2] = -1;
 }
 
 /**
@@ -75,4 +76,5 @@ void GPS::readAuxilliaryData(float *data) {
   data[0] = _gps.altitude;
   data[1] = _gps.speed;
   data[2] = _gps.angle;
+  data[3] = -1;
 }

@@ -17,7 +17,6 @@ void IMU::init(){
     exit(1);
   }
   _bno.setExtCrystalUse(true);
-
 }
 
 void IMU::readAccelerationData(float *data){
@@ -26,6 +25,7 @@ void IMU::readAccelerationData(float *data){
   data[0] = accelData.x();
   data[1] = accelData.y();
   data[2] = accelData.z();
+  data[3] = -1;
 }
 
 void IMU::readOrientationData(float *data){
@@ -34,6 +34,7 @@ void IMU::readOrientationData(float *data){
   data[0] = oreintationData.x();
   data[1] = orientationData.y();
   data[2] = oreintationData.z();
+  data[3] = -1;
 }
 
 void IMU::readOrientationChangeData(float *data){
@@ -42,4 +43,5 @@ void IMU::readOrientationChangeData(float *data){
   data[0] = gyroscopeData.x();
   data[1] = gyroscopeData.y();
   data[2] = gyroscopeData.z();
+  data[3] = -1;
 }

@@ -16,9 +16,9 @@ using namespace std;
 class IMU {
   public:
     IMU();
-    readAccelerationData(float *data);
-    readOrientationData(float *data);
-    readOrientationChangeData(float *data);
+    void readAccelerationData(float *data);
+    void readOrientationData(float *data);
+    void readOrientationChangeData(float *data);
 
   private:
     Adafruit_BNO055 _bno;
