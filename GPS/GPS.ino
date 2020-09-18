@@ -1,5 +1,5 @@
 /*
-  GPS.ino - GPS Client side microcontroller code. 
+  GPS.ino - GPS Client side microcontroller code.
   Created by Vamshi Balanaga, Feb 25, 2020.
 */
 
@@ -43,7 +43,7 @@ void setup() {
   INTERNALSERIAL.begin(RS485BAUD);
 
   GPS.begin(9600);
-  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY); // type of data 
+  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY); // type of data
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // 1Hz update rate
   GPS.sendCommand(PGCMD_ANTENNA);
 
