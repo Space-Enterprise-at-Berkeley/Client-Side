@@ -41,14 +41,14 @@ void updateSensorNum(int howMany) {
   }
 }
 
-void getReading0(float data[6]) {
+void getReading0(float *data) {
   //get the sensor reading here
   data[0] = 36.89;
   data[1] = 25.50;
   data[2] = 30.45;
 }
 
-float getReading1(float data[6]) {
+float getReading1(float *data) {
   //get the sensor reading here
   data[0] = 14.26;
 }
