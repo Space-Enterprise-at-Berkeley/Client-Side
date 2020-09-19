@@ -7,6 +7,9 @@ Download the [Arduino IDE](https://www.arduino.cc/en/Main/Software).
 
 We use the Teensy 4.0 board in addition to vanilla arduino boards. Setup the environment according to the [instructions here](https://www.pjrc.com/teensy/td_download.html).
 
+Copy all of the contents of the `libraries` directory into your Arduino IDE libraries directory.
+You can find the path to your Arduino IDE library path by clicking on `File -> Preferences` in the Arduino IDE.
+
 ## Contribution
 
 ### Client Boards
@@ -23,7 +26,7 @@ that returns a struct with the current time and the sensor reading.
 
 When you submit a pull request, include the average time your function takes in microseconds.
 
-NOTE: This architecture is borrowed from McGill Rocket Team. See [here](https://github.com/liurichard95/mrt-avionics) 
+NOTE: This architecture is borrowed from McGill Rocket Team. See [here](https://github.com/liurichard95/mrt-avionics)
 for their documentation.
 
 ### Submitting
