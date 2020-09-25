@@ -27,4 +27,4 @@ class Barometer {
     float seaLevelPressure = SEALEVELPRESSURE_HPA;
     bool updatedSeaLevelPressure = false;
     void init();
-}
+};
