@@ -4,11 +4,11 @@
 */
 
 #include "solenoids.h"
+#include "Arduino.h"
 
 // ==================== NEED TO TEST =======================================
 
 Solenoids::Solenoids() {
-  init();
 }
 
 void Solenoids::init() {
@@ -73,6 +73,16 @@ int Solenoids::toggleLOX5Way() {
   return lox5_state;
 }
 
+int Solenoids::toggleLOXGems() {
+  if (lox_gems_state == 0){
+    lox_gems_state = 1;
+  } else {
+    lox_gems_state = 0;
+  }
+  digitalWrite(LOX_GEMS_PIN, lox_gems_state);
+  return lox_gems_state;
+}
+
 int Solenoids::toggleProp2Way() {
   if (prop2_state == 0){
     prop2_state = 1;
@@ -93,6 +103,16 @@ int Solenoids::toggleProp5Way() {
   return prop5_state;
 }
 
+int Solenoids::togglePropGems() {
+  if (prop_gems_state == 0){
+    prop_gems_state = 1;
+  } else {
+    prop_gems_state = 0;
+  }
+  digitalWrite(PROP_GEMS_PIN, prop_gems_state);
+  return prop_gems_state;
+}
+
 int Solenoids::activateHighPressureSolenoid() {
   if(high_sol_state == 0){
     toggleHighPressureSolenoid();
@@ -111,6 +131,15 @@ int Solenoids::armLOX() {
   return lox2_state;
 }
 
+int Solenoids::disarmLOX() {
+  if (lox2_state == 1) {
+    toggleLOX2Way();
+  } else {
+    // already closed, do nothing.
+  }
+  return lox2_state;
+}
+
 int Solenoids::armPropane() {
   if (prop2_state == 0) {
     toggleProp2Way();
@@ -120,9 +149,21 @@ int Solenoids::armPropane() {
   return prop2_state;
 }
 
+int Solenoids::disarmPropane() {
+  if (prop2_state == 1) {
+    toggleProp2Way();
+  } else {
+    // already closed, do nothing.
+  }
+  return prop2_state;
+}
+
 int Solenoids::armAll() {
-  armLOX();
-  armPropane();
+  return armLOX() & armPropane();
+}
+
+int Solenoids::disarmAll(){
+  return (!disarmLOX() & !disarmPropane());
 }
 
 int Solenoids::openLOX() {
@@ -133,6 +174,18 @@ int Solenoids::openLOX() {
     toggleLOX5Way();
   } else {
     // already active, do nothing.
+  }
+  return lox5_state;
+}
+
+int Solenoids::closeLOX() {
+  if(!loxArmed()){ // it won't work if there's no pressure. ie even to close, needs to be armed.
+    return -1;
+  }
+  if (lox5_state == 1) {
+    toggleLOX5Way();
+  } else {
+    // already closed, do nothing.
   }
   return lox5_state;
 }
@@ -155,6 +208,7 @@ int Solenoids::LAUNCH() {
   }
   openLOX();
   openPropane();
+  return 1;
 }
 
 bool Solenoids::loxArmed() {
