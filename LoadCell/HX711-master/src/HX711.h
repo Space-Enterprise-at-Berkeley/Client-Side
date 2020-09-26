@@ -88,15 +88,4 @@ class HX711
 		void power_up();
 };
 
-class loadCell{
-  public:
-    loadCell();
-    void readLoad(float * data);
-
-  private:
-    void init();
-    HX711 _lc;
-    int calibrationValue; // ======== SET THIS TO SOMETHING ===========
-};
-
 #endif /* HX711_h */
