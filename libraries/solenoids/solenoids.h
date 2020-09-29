@@ -20,7 +20,9 @@ class Solenoids {
   public:
     Solenoids();
     void init();
+    
     int activateHighPressureSolenoid();
+    int deactivateHighPressureSolenoid();
 
     int armLOX();
     int armPropane();
@@ -35,16 +37,11 @@ class Solenoids {
 
     int closeLOX();
     int closePropane();
-    
+
     int LAUNCH();
 
-    int toggleLOX2Way();
-    int toggleLOX5Way();
-    int toggleLOXGems();
-
-    int toggleProp2Way();
-    int toggleProp5Way();
-    int togglePropGems();
+  private:
+    int high_sol_state = 0;
 
     int lox2_state = 0;
     int lox5_state = 0;
@@ -54,12 +51,15 @@ class Solenoids {
     int prop5_state = 0;
     int prop_gems_state = 0;
 
-  private:
-    int high_sol_state = 0;
-
-
     int toggleHighPressureSolenoid();
 
+    int toggleLOX2Way();
+    int toggleLOX5Way();
+    int toggleLOXGems();
+
+    int toggleProp2Way();
+    int toggleProp5Way();
+    int togglePropGems();
 
     bool loxArmed();
     bool propArmed();

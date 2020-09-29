@@ -8,7 +8,13 @@ Download the [Arduino IDE](https://www.arduino.cc/en/Main/Software).
 We use the Teensy 4.0 board in addition to vanilla arduino boards. Setup the environment according to the [instructions here](https://www.pjrc.com/teensy/td_download.html).
 
 Copy all of the contents of the `libraries` directory into your Arduino IDE libraries directory.
-You can find the path to your Arduino IDE library path by clicking on `File -> Preferences` in the Arduino IDE.
+If your Arduino is installed to the default directory you can use the following install scripts to do this.
+On linux and mac navigate to the libraries folder and run the following commands:
+`chmod +x install.sh`
+`./install.sh`
+On windows, please figure it out. (I'll add a script eventually).
+
+If your Arduino is not installed to the default location, you'll need to find the path by clicking on `File -> Preferences` in the Arduino IDE.
 
 ## Contribution
 

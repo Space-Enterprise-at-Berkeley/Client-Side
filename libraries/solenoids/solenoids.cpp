@@ -6,8 +6,6 @@
 #include "solenoids.h"
 #include "Arduino.h"
 
-// ==================== NEED TO TEST =======================================
-
 Solenoids::Solenoids() {
 }
 
@@ -122,6 +120,15 @@ int Solenoids::activateHighPressureSolenoid() {
   return high_sol_state;
 }
 
+int Solenoids::deactivateHighPressureSolenoid() {
+  if(high_sol_state == 1){
+    toggleHighPressureSolenoid();
+  } else {
+    // already closed, do nothing.
+  }
+  return high_sol_state;
+}
+
 int Solenoids::armLOX() {
   if (lox2_state == 0) {
     toggleLOX2Way();
@@ -198,6 +205,18 @@ int Solenoids::openPropane() {
     toggleProp5Way();
   } else {
     // already active, do nothing.
+  }
+  return prop5_state;
+}
+
+int Solenoids::closePropane() {
+  if(!propArmed()){
+    return -1;
+  }
+  if(prop5_state == 1){
+    toggleProp5Way();
+  } else {
+    // already closed, do nothing.
   }
   return prop5_state;
 }
