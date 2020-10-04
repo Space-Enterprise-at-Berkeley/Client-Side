@@ -20,7 +20,7 @@ class Solenoids {
   public:
     Solenoids();
     void init();
-    
+
     int activateHighPressureSolenoid();
     int deactivateHighPressureSolenoid();
 

@@ -22,13 +22,13 @@ Above should go into Brain ino For E1.
 #define GPSECHO false
 
 GPS::GPS(HardwareSerial *ser){
-  AdaFruit_GPS _gps(ser);
+  Adafruit_GPS _gps(ser);
   commMethod = 1;
   init();
 }
 
 GPS::GPS(TwoWire *theWire){
-  AdaFruit_GPS _gps(theWire);
+  Adafruit_GPS _gps(theWire);
   commMethod = 3;
   init();
 }
@@ -49,20 +49,21 @@ void GPS::init(){
   delay(1000);
 }
 
-bool GPS::startReadInterrupt(TimerInterrupt *timer) {
-  return timer.attachInterruptInterval(1000, _gps.read)); // 1000 ms delay matching 1Hz frequency
-}
+// bool GPS::startReadInterrupt(TimerInterrupt *timer) {
+//   //return timer.attachInterruptInterval(1000, _gps.read)); // 1000 ms delay matching 1Hz frequency
+// }
 
 bool GPS::dataAvailable(){
   return _gps.newNMEAreceived();
 }
 
-bool GPS::gotSatelliteFix(){
+bool GPS::gotSatelliteFix() {
+   _gps.read();
    return _gps.fix;
 }
 
 void GPS::readPositionData(float *data){
-  // _gps.read(); should be called in interrupt now.
+  _gps.read();
   data[0] = _gps.latitudeDegrees;
   data[1] = _gps.longitudeDegrees;
   data[2] = -1;
@@ -72,9 +73,10 @@ void GPS::readPositionData(float *data){
  * Define this in advance. Need to be agreed on by everyone.
  */
 void GPS::readAuxilliaryData(float *data) {
-  // _gps.read(); should be called in interrupt now.
+  _gps.read();
   data[0] = _gps.altitude;
   data[1] = _gps.speed;
   data[2] = _gps.angle;
-  data[3] = -1;
+  data[3] = _gps.satellites;
+  data[4] = -1;
 }

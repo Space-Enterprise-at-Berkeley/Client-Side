@@ -4,7 +4,7 @@
 */
 
 #include <Adafruit_GPS.h>
-#include "TimerInterrupt.h"
+// #include "TimerInterrupt.h"
 
 using namespace std;
 
@@ -17,9 +17,10 @@ class GPS {
     void readAuxilliaryData(float *data);
     bool gotSatelliteFix();
     bool dataAvailable();
-    bool startReadInterrupt(TimerInterrupt *timer);
+    // bool startReadInterrupt(TimerInterrupt *timer);
+    void init();
+
   private:
     uint8_t commMethod; // 1 for HardwareSerial, 2 for SoftwareSerial, 3 for I2c, 4 for SPI
-    AdaFruit_GPS _gps;
-    void init();
-}
+    Adafruit_GPS _gps;
+};
