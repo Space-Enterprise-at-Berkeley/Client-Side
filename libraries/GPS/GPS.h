@@ -17,7 +17,6 @@ class GPS {
     void readAuxilliaryData(float *data);
     bool gotSatelliteFix();
     bool dataAvailable();
-    // bool startReadInterrupt(TimerInterrupt *timer);
     void init();
 
   private:

@@ -6,7 +6,7 @@
 
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BMP3xx.h>
+#include <Adafruit_BMP3XX.h>
 
 using namespace std;
 
