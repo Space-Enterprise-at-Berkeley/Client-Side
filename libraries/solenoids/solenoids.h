@@ -24,6 +24,11 @@ class Solenoids {
     int activateHighPressureSolenoid();
     int deactivateHighPressureSolenoid();
 
+    int ventPropaneGems();
+    int ventLOXGems();
+    int closePropaneGems();
+    int closeLOXGems();
+
     int armLOX();
     int armPropane();
     int armAll();

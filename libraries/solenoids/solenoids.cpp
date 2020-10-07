@@ -129,6 +129,42 @@ int Solenoids::deactivateHighPressureSolenoid() {
   return high_sol_state;
 }
 
+int Solenoids::ventLOXGems(){
+  if (lox_gems_state == 0) {
+    toggleLOXGems();
+  } else {
+    // already active, do nothing.
+  }
+  return lox_gems_state;
+}
+
+int Solenoids::closeLOXGems(){
+  if (lox_gems_state == 1) {
+    toggleLOXGems();
+  } else {
+    // already closed, do nothing.
+  }
+  return lox_gems_state;
+}
+
+int Solenoids::ventPropaneGems(){
+  if (prop_gems_state == 0) {
+    togglePropGems();
+  } else {
+    // already active, do nothing.
+  }
+  return prop_gems_state;
+}
+
+int Solenoids::closePropaneGems(){
+  if (prop_gems_state == 1) {
+    togglePropGems();
+  } else {
+    // already closed, do nothing.
+  }
+  return prop_gems_state;
+}
+
 int Solenoids::armLOX() {
   if (lox2_state == 0) {
     toggleLOX2Way();
