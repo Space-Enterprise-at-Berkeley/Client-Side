@@ -11,7 +11,7 @@
 using namespace std;
 
 #define BNO055_SAMPLERATE_DELAY_MS (100)
-
+#define SEALEVELPRESSURE_HPA (1013.25)
 
 class Barometer {
   public:
