@@ -5,41 +5,28 @@
 */
 #include "GPS.h"
 // ======================================NEED TO TEST ==========================
-/*
-#define TIMER_INTERRUPT_DEBUG      0
 
-#define USE_TIMER_1     true
-#define USE_TIMER_2     true
-#define USE_TIMER_3     false
-#define USE_TIMER_4     false
-#define USE_TIMER_5     false
+GPSECHO false
 
-#include "TimerInterrupt.h"
-
-Above should go into Brain ino For E1.
-*/
-
-#define GPSECHO false
-
-GPS::GPS(HardwareSerial *ser){
-  AdaFruit_GPS _gps(ser);
+GPS::GPS(HardwareSerial *ser) {
+  Adafruit_GPS _gps(ser);
   commMethod = 1;
   init();
 }
 
-GPS::GPS(TwoWire *theWire){
-  AdaFruit_GPS _gps(theWire);
+GPS::GPS(TwoWire *theWire) {
+  Adafruit_GPS _gps(theWire);
   commMethod = 3;
   init();
 }
 
-GPS::GPS(SPIClass *theSPI, int8_t cspin){
+GPS::GPS(SPIClass *theSPI, int8_t cspin) {
   Adafruit_GPS _gps(theSPI, cspin);
   commMethod = 4;
   init();
 }
 
-void GPS::init(){
+void GPS::init() {
   _gps.begin(9600);
 
   _gps.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
@@ -49,20 +36,17 @@ void GPS::init(){
   delay(1000);
 }
 
-bool GPS::startReadInterrupt(TimerInterrupt *timer) {
-  return timer.attachInterruptInterval(1000, _gps.read)); // 1000 ms delay matching 1Hz frequency
-}
-
-bool GPS::dataAvailable(){
+bool GPS::dataAvailable() {
   return _gps.newNMEAreceived();
 }
 
-bool GPS::gotSatelliteFix(){
+bool GPS::gotSatelliteFix() {
+   _gps.read();
    return _gps.fix;
 }
 
-void GPS::readPositionData(float *data){
-  // _gps.read(); should be called in interrupt now.
+void GPS::readPositionData(float *data) {
+  _gps.read();
   data[0] = _gps.latitudeDegrees;
   data[1] = _gps.longitudeDegrees;
   data[2] = -1;
@@ -72,9 +56,10 @@ void GPS::readPositionData(float *data){
  * Define this in advance. Need to be agreed on by everyone.
  */
 void GPS::readAuxilliaryData(float *data) {
-  // _gps.read(); should be called in interrupt now.
+  _gps.read();
   data[0] = _gps.altitude;
   data[1] = _gps.speed;
   data[2] = _gps.angle;
-  data[3] = -1;
+  data[3] = _gps.satellites;
+  data[4] = -1;
 }

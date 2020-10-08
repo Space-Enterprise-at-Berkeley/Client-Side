@@ -6,7 +6,7 @@
 
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
-#include "Adafruit_BMP3xx.h"
+#include <Adafruit_BMP3XX.h>
 
 using namespace std;
 
@@ -15,7 +15,7 @@ using namespace std;
 
 class Barometer {
   public:
-    Barometer();
+    Barometer(TwoWire *theWire);
     void readAltitudeData(float *data);
     void readPressureData(float *data);
     void readTemperatureData(float *data);
@@ -26,5 +26,5 @@ class Barometer {
     Adafruit_BMP3XX _bmp;
     float seaLevelPressure = SEALEVELPRESSURE_HPA;
     bool updatedSeaLevelPressure = false;
-    void init();
-}
+    void init(TwoWire *theWire);
+};

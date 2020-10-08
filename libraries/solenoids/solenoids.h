@@ -19,15 +19,34 @@ using namespace std;
 class Solenoids {
   public:
     Solenoids();
+    void init();
+
     int activateHighPressureSolenoid();
+    int deactivateHighPressureSolenoid();
+
+    int ventPropaneGems();
+    int ventLOXGems();
+    int closePropaneGems();
+    int closeLOXGems();
+
     int armLOX();
     int armPropane();
     int armAll();
+
+    int disarmLOX();
+    int disarmPropane();
+    int disarmAll();
+
     int openLOX();
     int openPropane();
+
+    int closeLOX();
+    int closePropane();
+
     int LAUNCH();
 
   private:
+    int high_sol_state = 0;
 
     int lox2_state = 0;
     int lox5_state = 0;
@@ -37,16 +56,16 @@ class Solenoids {
     int prop5_state = 0;
     int prop_gems_state = 0;
 
-    int high_sol_state = 0;
-
-    void init();
-
     int toggleHighPressureSolenoid();
+
     int toggleLOX2Way();
     int toggleLOX5Way();
+    int toggleLOXGems();
+
     int toggleProp2Way();
     int toggleProp5Way();
+    int togglePropGems();
 
     bool loxArmed();
     bool propArmed();
-}
+};

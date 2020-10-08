@@ -3,26 +3,37 @@
   Created by Vamshi Balanaga, Sept 18, 2020.
 */
 
-#include "therm.h"
+#include "Thermocouple.h"
 
 Thermocouple::Thermocouple(int numSensors){
   _ow = OneWire(OW_DATA_PIN);
   numThermos = numSensors;
-  _ow.reset();
+
+  // for (int i = 0; i < 8; i++){
+  //   Serial.print(rom[i]);
+  //   Serial.print(" ");
+  // }
+  // Serial.println("");
+
 }
 
+void Thermocouple::init(){
+  _ow.reset();
+  delay(250);
+  _ow.search(rom);
+}
 /**
  * whichSensor is 0 indexed.
  */
 void Thermocouple::readTemperatureData(float *data, int whichSensor) {
-  if(whichSensor >= numSensors){
+  if(whichSensor >= numThermos) {
     data[0] = -1;
     return;
   }
 
   scrollToRightSensor(whichSensor);
 
-  for (int i = 0; i < 9; i++){ // need 9 bytes apparently.
+  for (int i = 0; i < 9; i++) { // need 9 bytes apparently.
     sensorData[i] = _ow.read();
   }
 
@@ -33,14 +44,21 @@ void Thermocouple::readTemperatureData(float *data, int whichSensor) {
 }
 
 void Thermocouple::scrollToRightSensor(int whichSensor){
-  if(whichSensor < currSensor){
+  if(whichSensor < currSensorNum){
      _ow.reset_search();
-     currSensor = 0;
+     currSensorNum = 0;
      delay(250);
-   }
-  for (int i = currSensor; i <= whichSensor; i++){
-    _ow.search(rom);
   }
+  for (int i = currSensorNum; i <= whichSensor; i++){
+    _ow.search(rom);
+    currSensorNum = i;
+  }
+  _ow.reset();
+  _ow.select(rom);
+  _ow.write(0x44, 1);
+
+  delay (1000);
+
   _ow.reset();
   _ow.select(rom);
   _ow.write(0xBE);
