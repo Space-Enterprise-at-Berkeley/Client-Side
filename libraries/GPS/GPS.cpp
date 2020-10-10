@@ -8,19 +8,19 @@
 
 GPSECHO false
 
-GPS::GPS(HardwareSerial *ser) {
+void GPS::init(HardwareSerial *ser) {
   Adafruit_GPS _gps(ser);
   commMethod = 1;
   init();
 }
 
-GPS::GPS(TwoWire *theWire) {
+void GPS::init(TwoWire *theWire) {
   Adafruit_GPS _gps(theWire);
   commMethod = 3;
   init();
 }
 
-GPS::GPS(SPIClass *theSPI, int8_t cspin) {
+void GPS::init(SPIClass *theSPI, int8_t cspin) {
   Adafruit_GPS _gps(theSPI, cspin);
   commMethod = 4;
   init();

@@ -7,12 +7,8 @@
 
 // ==================== NEED TO TEST =======================================
 
-Barometer::Barometer(TwoWire *theWire){
-  _bmp = Adafruit_BMP3XX(-1);
-  init(theWire);
-}
-
 void Barometer::init(TwoWire *theWire) {
+  _bmp = Adafruit_BMP3XX(-1);
   if(!_bmp.begin(BMP3XX_DEFAULT_ADDRESS, theWire)){
     exit(1);
   }
