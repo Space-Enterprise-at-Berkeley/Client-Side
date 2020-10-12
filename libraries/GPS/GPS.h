@@ -8,16 +8,67 @@
 
 using namespace std;
 
-namespace GPS {
-  
-    void readPositionData(float *data);
-    void readAuxilliaryData(float *data);
-    bool gotSatelliteFix();
-    bool dataAvailable();
-    void init(HardwareSerial *ser);
-    void init(TwoWire *theWire);
-    void init(SPIClass *theSPI, int8_t cspin);
 
-    uint8_t commMethod; // 1 for HardwareSerial, 2 for SoftwareSerial, 3 for I2c, 4 for SPI
-    Adafruit_GPS _gps;
+namespace GPS {
+  #define GPSECHO false
+
+  Adafruit_GPS _gps;
+  uint8_t commMethod; // 1 for HardwareSerial, 2 for SoftwareSerial, 3 for I2c, 4 for SPI
+
+
+  void init() {
+      _gps.begin(9600);
+
+      _gps.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
+      _gps.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // 1 Hz update rate
+      _gps.sendCommand(PGCMD_ANTENNA);
+
+      delay(1000);
+  }
+
+  void init(HardwareSerial *ser) {
+     _gps = Adafruit_GPS(ser);
+    commMethod = 1;
+    init();
+  }
+
+  void init(TwoWire *theWire) {
+     _gps = Adafruit_GPS(theWire);
+    commMethod = 3;
+    init();
+  }
+
+  void init(SPIClass *theSPI, int8_t cspin) {
+    _gps = Adafruit_GPS(theSPI, cspin);
+    commMethod = 4;
+    init();
+  }
+
+  bool dataAvailable() {
+    return _gps.newNMEAreceived();
+  }
+
+  bool gotSatelliteFix() {
+     _gps.read();
+     return _gps.fix;
+  }
+
+  void readPositionData(float *data) {
+    _gps.read();
+    data[0] = _gps.latitudeDegrees;
+    data[1] = _gps.longitudeDegrees;
+    data[2] = -1;
+  }
+
+  /**
+   * Define this in advance. Need to be agreed on by everyone.
+   */
+  void readAuxilliaryData(float *data) {
+    _gps.read();
+    data[0] = _gps.altitude;
+    data[1] = _gps.speed;
+    data[2] = _gps.angle;
+    data[3] = _gps.satellites;
+    data[4] = -1;
+  }
 };
