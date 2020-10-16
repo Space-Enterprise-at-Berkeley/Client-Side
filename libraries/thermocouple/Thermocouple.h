@@ -3,8 +3,8 @@
   Created by Vamshi Balanaga, Sept 18, 2020.
 */
 
-#ifndef __DUCERS__
-#define __DUCERS__
+#ifndef __THERMS__
+#define __THERMS__
 
 #include <OneWire.h>
 
@@ -30,6 +30,31 @@ namespace Thermocouple {
     _ow.search(rom);
   }
 
+  void scrollToRightSensor(int whichSensor){
+    bool searched = false;
+    if(whichSensor < currSensorNum){
+       _ow.reset_search();
+       currSensorNum = 0;
+       delay(250);
+    }
+    for (int i = currSensorNum; i < whichSensor; i++){
+      _ow.search(rom);
+      currSensorNum = i;
+      searched=true;
+    }
+    if(searched){
+      _ow.reset();
+      _ow.select(rom);
+      _ow.write(0x44, 1);
+
+      delay (1000);
+
+      _ow.reset();
+      _ow.select(rom);
+      _ow.write(0xBE);
+    }
+  }
+
   /**
    * whichSensor is 0 indexed.
    */
@@ -51,25 +76,5 @@ namespace Thermocouple {
     data[1] = -1;
   }
 
-  void scrollToRightSensor(int whichSensor){
-    if(whichSensor < currSensorNum){
-       _ow.reset_search();
-       currSensorNum = 0;
-       delay(250);
-    }
-    for (int i = currSensorNum; i < whichSensor; i++){
-      _ow.search(rom);
-      currSensorNum = i;
-    }
-    _ow.reset();
-    _ow.select(rom);
-    _ow.write(0x44, 1);
-
-    delay (1000);
-
-    _ow.reset();
-    _ow.select(rom);
-    _ow.write(0xBE);
-  }
 };
 #endif
