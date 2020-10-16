@@ -1,3 +1,7 @@
+/*
+  ducer.h - A c++ library to interface with the analog pressure transducers via the 
+  Created by Vamshi Balanaga, Sept 18, 2020.
+*/
 
 #ifndef __DUCERS__
 #define __DUCERS__
