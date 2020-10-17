@@ -9,15 +9,15 @@ using namespace std;
 
 namespace Solenoids {
 
-  #define LOX_2_PIN 2
-  #define LOX_5_PIN 3
+  #define LOX_2_PIN 0
+  #define LOX_5_PIN 2
   #define LOX_GEMS_PIN 4
 
-  #define PROP_2_PIN 8
-  #define PROP_5_PIN 9
-  #define PROP_GEMS_PIN 10
+  #define PROP_2_PIN 1
+  #define PROP_5_PIN 3
+  #define PROP_GEMS_PIN 5
 
-  #define HIGH_SOL_PIN 13
+  #define HIGH_SOL_PIN 6
 
   int high_sol_state = 0;
 
