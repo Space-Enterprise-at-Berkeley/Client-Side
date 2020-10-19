@@ -8,7 +8,7 @@
 
 #include <OneWire.h>
 
-#define OW_DATA_PIN 2
+#define OW_DATA_PIN 11
 
 using namespace std;
 
@@ -28,21 +28,32 @@ namespace Thermocouple {
     _ow.reset();
     delay(250);
     _ow.search(rom);
+    // for(int i = 0; i < 8; i++) {
+    //   Serial.print(rom[i]);
+    // }
+    // Serial.println("initialized");
   }
 
   void scrollToRightSensor(int whichSensor){
+    Serial.println("scrolling");
     bool searched = false;
     if(whichSensor < currSensorNum){
        _ow.reset_search();
        currSensorNum = 0;
        delay(250);
     }
-    for (int i = currSensorNum; i < whichSensor; i++){
+    for (int i = currSensorNum; i <= whichSensor; i++){
+      // Serial.println("searching");
       _ow.search(rom);
       currSensorNum = i;
       searched=true;
     }
     if(searched){
+      // Serial.println("after searching doing rom stuff");
+      // for(int i = 0; i < 8; i++) {
+      //   Serial.print(rom[i]);
+      // }
+      // Serial.println("\n");
       _ow.reset();
       _ow.select(rom);
       _ow.write(0x44, 1);
@@ -65,6 +76,7 @@ namespace Thermocouple {
     }
 
     scrollToRightSensor(whichSensor);
+    // Serial.println("done scrolling");
 
     for (int i = 0; i < 9; i++) { // need 9 bytes apparently.
       sensorData[i] = _ow.read();
@@ -74,6 +86,8 @@ namespace Thermocouple {
     celsius = (float)raw / 16.0;
     data[0] = celsius;
     data[1] = -1;
+    // Serial.print("celsius: ");
+    // Serial.println(celsius);
   }
 
 };
