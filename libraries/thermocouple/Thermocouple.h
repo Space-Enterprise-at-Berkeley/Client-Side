@@ -30,7 +30,6 @@ namespace Thermocouple {
     _ow.reset();
     delay(250);
     _ow.search(rom);
-    Serial.println("setup one wire");
   }
 
   void scrollToRightSensor(int whichSensor){
@@ -78,6 +77,8 @@ namespace Thermocouple {
     Serial.println(celsius);
     data[0] = celsius;
     data[1] = -1;
+    // Serial.print("celsius: ");
+    // Serial.println(celsius);
   }
 
 };
