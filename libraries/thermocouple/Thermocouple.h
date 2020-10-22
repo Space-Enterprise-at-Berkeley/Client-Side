@@ -8,11 +8,12 @@
 
 #include <OneWire.h>
 
-#define OW_DATA_PIN 2
 
 using namespace std;
 
 namespace Thermocouple {
+
+  int OW_DATA_PIN;
 
   byte sensorData[12];
   byte rom[8];
@@ -22,12 +23,14 @@ namespace Thermocouple {
   float celsius;
   OneWire _ow;
 
-  void init(int numSensors){
+  void init(int numSensors, int owPinNum = 11){
+    OW_DATA_PIN = owPinNum;
     _ow = OneWire(OW_DATA_PIN);
     numThermos = numSensors;
     _ow.reset();
     delay(250);
     _ow.search(rom);
+    Serial.println("setup one wire");
   }
 
   void scrollToRightSensor(int whichSensor){
@@ -37,7 +40,7 @@ namespace Thermocouple {
        currSensorNum = 0;
        delay(250);
     }
-    for (int i = currSensorNum; i < whichSensor; i++){
+    for (int i = currSensorNum; i <= whichSensor; i++) {
       _ow.search(rom);
       currSensorNum = i;
       searched=true;
@@ -56,22 +59,23 @@ namespace Thermocouple {
   }
 
   /**
-   * whichSensor is 0 indexed.
-   */
-  void readTemperatureData(float *data, int whichSensor) {
-    if(whichSensor >= numThermos) {
-      data[0] = -1;
-      return;
+   * Alias for 'scrollToRightSensor'. Makes more sense to user.
+  */
+  void setSensor(int whichSensor){
+    if(whichSensor > numThermos){
+      whichSensor = 0;
     }
-
     scrollToRightSensor(whichSensor);
+  }
 
-    for (int i = 0; i < 9; i++) { // need 9 bytes apparently.
+
+  void readTemperatureData(float *data) {
+    for (int i = 0; i < 8; i++) { // need 9 bytes apparently.
       sensorData[i] = _ow.read();
     }
-
     int16_t raw = (sensorData[1] << 8) | sensorData[0];
     celsius = (float)raw / 16.0;
+    Serial.println(celsius);
     data[0] = celsius;
     data[1] = -1;
   }
