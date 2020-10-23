@@ -38,23 +38,27 @@ namespace Thermocouple {
        _ow.reset_search();
        currSensorNum = 0;
        delay(250);
+       searched = true;
     }
     for (int i = currSensorNum; i <= whichSensor; i++) {
       _ow.search(rom);
       currSensorNum = i;
       searched=true;
     }
-    if(searched){
+    if(searched) {
       _ow.reset();
       _ow.select(rom);
       _ow.write(0x44, 1);
 
-      delay (1000);
+      delay (400);
 
       _ow.reset();
       _ow.select(rom);
       _ow.write(0xBE);
     }
+    // for(int i = 0; i < 8; i++){
+    //   Serial.println(rom[i]);
+    // }
   }
 
   /**
@@ -74,7 +78,7 @@ namespace Thermocouple {
     }
     int16_t raw = (sensorData[1] << 8) | sensorData[0];
     celsius = (float)raw / 16.0;
-    Serial.println(celsius);
+    //Serial.println(celsius);
     data[0] = celsius;
     data[1] = -1;
     // Serial.print("celsius: ");
