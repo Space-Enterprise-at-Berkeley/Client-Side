@@ -9,6 +9,7 @@ using namespace std;
 
 namespace Solenoids {
 
+  // take this pin values on init, and put them in a config file with brain.
   #define LOX_2_PIN 0
   #define LOX_5_PIN 2
   #define LOX_GEMS_PIN 4
@@ -292,6 +293,15 @@ namespace Solenoids {
     }
     openLOX();
     openPropane();
+    return 1;
+  }
+
+  int endBurn() {
+    if (!loxArmed() || !propArmed()){
+      return -1;
+    }
+    closeLOX();
+    closePropane();
     return 1;
   }
 }

@@ -23,7 +23,6 @@ static void i2cWrite(uint8_t x) {
   #endif
 }
 
-
 ADS1219::ADS1219(int drdy, uint8_t addr) {
   data_ready = drdy;
   address = addr;
@@ -32,7 +31,7 @@ ADS1219::ADS1219(int drdy, uint8_t addr) {
 }
 
 void ADS1219::begin() {
-  Wire.begin();
+  //Wire.begin();
 }
 
 void ADS1219::start() {
@@ -79,9 +78,9 @@ void ADS1219::resetConfig(){
 	writeRegister(0x00);
 }
 
-long ADS1219::readData(int channel){
+long ADS1219::readData(int channel) {
 	config &= MUX_MASK;
-	switch (channel){
+	switch (channel) {
     case (0):
       config |= MUX_SINGLE_0;
       break;
@@ -94,15 +93,15 @@ long ADS1219::readData(int channel){
     case (3):
       config |= MUX_SINGLE_3;
       break;
-	default:
-	  break;
+	  default:
+	   break;
   }
   writeRegister(config);
-    if(singleShot){
-	     start();
-    }
-	  while(digitalRead(data_ready)==1);
-	  return readConversionResult();
+  if(singleShot){
+	    start();
+  }
+	while(digitalRead(data_ready)==1);
+	return readConversionResult();
 }
 
 long ADS1219::readDifferential_0_1(){

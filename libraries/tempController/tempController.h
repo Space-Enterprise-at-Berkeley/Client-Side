@@ -13,30 +13,28 @@
 using namespace std;
 
 namespace tempController {
-
-
   int algorithmChoice; // 1 - naive, 2 - actual control theory
   int setPointTemp;
+  int heaterPin;
+  int heaterOutput = 0;
 
   float k_p = 100;
-  float k_i = 0.0000001;
+  float k_i = 0.0000001; // low because t is in millis
   float k_d = 1000;
 
-  PID *controller = new PID(1024, 0, k_p, k_i, k_d);
+  PID *controller = new PID(255, 0, k_p, k_i, k_d);
 
-
-
-
-  int init(int tempSetPoint, int _algorithmChoice) {
+  int init(int tempSetPoint, int _algorithmChoice, int heaterPin) {
     if (_algorithmChoice > 2 || _algorithmChoice < 0) {
       return -1;
     }
+    pinMode(heaterPin, OUTPUT);
     algorithmChoice = _algorithmChoice;
     setPointTemp = tempSetPoint;
     return 0;
   }
 
-  int controlTemp(float currTemp) {
+  int calculateOutput(float currTemp) {
     int voltageOut = 0;
     if (algorithmChoice == 1) { // naive
       voltageOut = (int)(k_p * (setPointTemp - currTemp));
@@ -48,12 +46,15 @@ namespace tempController {
       // }
     } else if (algorithmChoice == 2) { // linear control theory solution
       return controller->calculate(setPointTemp, currTemp);
-      // voltageOut = (int)(k_p * (setPointTemp - currTemp));
-      // voltageOut = max(0, min(255, voltageOut));
-      // return voltageOut;
     } else {
       return -1;
     }
+  }
+
+  float controlTemp(float currTemp){
+    heaterOutput = calculateOutput(currTemp);
+    analogWrite(heaterPin, heaterOutput);
+    return ((float)(heaterOutput) / 255) * 24; // heater runs at 24 V
   }
 };
 #endif
