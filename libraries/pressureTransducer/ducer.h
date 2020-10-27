@@ -15,7 +15,7 @@ using namespace std;
 
 namespace Ducers {
 
-  int DTRDY_PIN_1 = 14;
+  int DTRDY_PIN_1 = 29;
   int DTRDY_PIN_2 = 28;
   int RESET_PIN_1 = 15;
   int RESET_PIN_2 = 29;
