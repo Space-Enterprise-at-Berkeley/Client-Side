@@ -15,7 +15,7 @@ using namespace std;
 namespace tempController {
   int algorithmChoice; // 1 - naive, 2 - actual control theory
   int setPointTemp;
-  int heaterPin;
+  int heaterPin = 0;
   int heaterOutput = 0;
 
   float k_p = 100;
@@ -24,10 +24,11 @@ namespace tempController {
 
   PID *controller = new PID(255, 0, k_p, k_i, k_d);
 
-  int init(int tempSetPoint, int _algorithmChoice, int heaterPin) {
+  int init(int tempSetPoint, int _algorithmChoice, int _heaterPin) {
     if (_algorithmChoice > 2 || _algorithmChoice < 0) {
       return -1;
     }
+    heaterPin = _heaterPin;
     pinMode(heaterPin, OUTPUT);
     algorithmChoice = _algorithmChoice;
     setPointTemp = tempSetPoint;
