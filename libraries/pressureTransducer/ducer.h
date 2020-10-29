@@ -125,25 +125,13 @@ namespace Ducers {
 
   void readPropaneTankPressure(float *data) {
     //AIN0
-      uint32_t temp = ads1.readData(0);
-      // Serial.println(temp);
-      // Serial.println(temp - calibration1);
-      // Serial.println(float(temp-calibration1));
-
-      data[0] = float(temp - calibration1);
-    // } else {
-    //   data[0] = -1;
-    // }
-
+    data[0] = float(ads1.readData(0) - calibration1);
     data[1] = -1;
   }
 
   void readLOXTankPressure(float *data) {
     // AIN1
-      data[0] = float(ads1.readData(1) - calibration1);
-    // } else {
-    //   data[0] = -1;
-    // }
+    data[0] = float(ads1.readData(1) - calibration1);
     data[1] = -1;
   }
 
@@ -155,18 +143,29 @@ namespace Ducers {
 
   void readLOXInjectorPressure(float *data) {
     //AIN3
-
     data[0] = float(ads1.readData(3) - calibration1);
     data[1] = -1;
   }
 
   void readPressurantTankPressure(float *data) {
     //AIN 0 on ADC 2
-
     data[0] = float(ads2.readData(0) - calibration2);
     data[1] = -1;
   }
 
+  void readAllLowPressures(float *data) {
+    data[0] = float(ads1.readData(0) - calibration1);
+    data[1] = float(ads1.readData(1) - calibration1);
+    data[2] = float(ads1.readData(2) - calibration1);
+    data[3] = float(ads1.readData(3) - calibration1);
+    data[4] = -1;
+  }
+
+  void readAllPressures(float *data) {
+    readAllLowPressures(data);
+    data[4] = float(ads2.readData(0) - calibration2);
+    data[5] = -1;
+  }
 }
 
 #endif
