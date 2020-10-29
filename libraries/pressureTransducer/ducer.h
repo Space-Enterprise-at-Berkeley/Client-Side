@@ -154,10 +154,10 @@ namespace Ducers {
   }
 
   void readAllLowPressures(float *data) {
-    data[0] = float(ads1.readData(0) - calibration1);
-    data[1] = float(ads1.readData(1) - calibration1);
-    data[2] = float(ads1.readData(2) - calibration1);
-    data[3] = float(ads1.readData(3) - calibration1);
+    data[0] = float(ads1.readData(1) - calibration1);
+    data[1] = float(ads1.readData(0) - calibration1);
+    data[2] = float(ads1.readData(3) - calibration1);
+    data[3] = float(ads1.readData(2) - calibration1);
     data[4] = -1;
   }
 
