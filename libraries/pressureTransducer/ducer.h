@@ -150,6 +150,8 @@ namespace Ducers {
     // localWire->endTransmission();
     //
     // delay(50);
+    pinMode(DTRDY_PIN_1, INPUT_PULLUP);
+    pinMode(DTRDY_PIN_2, INPUT_PULLUP);
   }
 
 
