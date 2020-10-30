@@ -120,8 +120,8 @@ namespace Ducers {
     ads1.setGain(GAIN_ONE);
     ads2.setGain(GAIN_ONE);
 
-    ads1.setDataRate(20);
-    ads2.setDataRate(20);
+    ads1.setDataRate(1000);
+    ads2.setDataRate(1000);
 
     // calibration1 = calibrateADC(ADC1_ADDR);
     // calibration2 = calibrateADC(ADC2_ADDR);
