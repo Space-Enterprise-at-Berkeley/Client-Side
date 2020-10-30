@@ -34,6 +34,31 @@ void ADS1219::begin() {
   //Wire.begin();
 }
 
+long ADS1219::getData(uint8_t conf) {
+  Wire.beginTransmission(address);
+  Wire.write(CONFIG_REGISTER_ADDRESS);
+  Wire.write(conf);
+  Wire.endTransmission();
+
+  Wire.beginTransmission(address);
+  Wire.write(0x08);
+  Wire.endTransmission();
+
+  while(digitalRead(data_ready)==1);
+  delay(1);
+  Wire.beginTransmission(address);
+  Wire.write(0x10);
+  Wire.endTransmission();
+
+  Wire.requestFrom((uint8_t)address,(uint8_t)3);
+  long data32 = Wire.read();
+  data32 <<= 8;
+  data32 |= Wire.read();
+  data32 <<= 8;
+  data32 |= Wire.read();
+  return (data32 << 8) >> 8;
+}
+
 void ADS1219::start() {
   Wire.beginTransmission(address);
   i2cWrite(0x08);

@@ -40,6 +40,14 @@
 #define VREF_INTERNAL			0x00
 #define VREF_EXTERNAL			0x01
 
+// #define conf_address 0x40
+// #define status_address 0x24
+// ​
+#define AIN0 0x61
+#define AIN1 0x81
+#define AIN2 0xA1
+#define AIN3 0xC1
+
 typedef enum{
   ONE	= GAIN_ONE,
   FOUR	= GAIN_FOUR
@@ -63,6 +71,7 @@ class ADS1219  {
     ADS1219(int drdy, uint8_t addr = 0x40);
 
     // Methods
+    long getData(uint8_t conf);
     void begin();
     void start();
   	void resetConfig();
