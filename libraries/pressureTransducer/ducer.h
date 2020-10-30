@@ -8,12 +8,19 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "ADS1219.h"
+// #include "ADS1219.h"
 // #include <TwoWire.h>
 
 using namespace std;
 
 namespace Ducers {
+
+  #define CONFIG_REGISTER_ADDRESS 0x40
+
+  #define AIN0 0x61
+  #define AIN1 0x81
+  #define AIN2 0xA1
+  #define AIN3 0xC1
 
   int DTRDY_PIN_1 = 29;
   int DTRDY_PIN_2 = 28;
@@ -21,11 +28,36 @@ namespace Ducers {
   int RESET_PIN_2 = 29;
 
   // first 7 bits for Arduino Wire
-  int ADC1_ADDR = 0b1001010;
-  int ADC2_ADDR = 0b1001000;
+  uint8_t ADC1_ADDR = 0b1001010;
+  uint8_t ADC2_ADDR = 0b1001000;
 
-  ADS1219 ads1(DTRDY_PIN_1, ADC1_ADDR);
-  ADS1219 ads2(DTRDY_PIN_2, ADC2_ADDR);
+  long getData(uint8_t address, uint8_t conf) {
+    Wire.beginTransmission(address);
+    Wire.write(CONFIG_REGISTER_ADDRESS);
+    Wire.write(conf);
+    Wire.endTransmission();
+
+    Wire.beginTransmission(address);
+    Wire.write(0x08);
+    Wire.endTransmission();
+
+    while(digitalRead(DTRDY_PIN_1)==1);
+    delay(1);
+    Wire.beginTransmission(address);
+    Wire.write(0x10);
+    Wire.endTransmission();
+
+    Wire.requestFrom((uint8_t)address,(uint8_t)3);
+    long data32 = Wire.read();
+    data32 <<= 8;
+    data32 |= Wire.read();
+    data32 <<= 8;
+    data32 |= Wire.read();
+    return (data32 << 8) >> 8;
+  }
+  //
+  // ADS1219 ads1(DTRDY_PIN_1, ADC1_ADDR);
+  // ADS1219 ads2(DTRDY_PIN_2, ADC2_ADDR);
 
   // first 3 bytes are mux select, gain, data rate, data rate, conversion mode, v ref
   TwoWire *localWire;
@@ -42,15 +74,15 @@ namespace Ducers {
   //   localWire->endTransmission();
   //   return 0;
   // }
-
-  uint32_t calibrateADC(ADS1219 ads) {
-    uint64_t calibrate = 0;
-    for (int i = 0; i <  10; i++){
-      uint32_t temp = ads.readShorted();
-      calibrate += temp;
-    }
-    return uint32_t (calibrate / 10);
-  }
+  //
+  // uint32_t calibrateADC(ADS1219 ads) {
+  //   uint64_t calibrate = 0;
+  //   for (int i = 0; i <  10; i++){
+  //     uint32_t temp = ads.readShorted();
+  //     calibrate += temp;
+  //   }
+  //   return uint32_t (calibrate / 10);
+  // }
 
   // bool isDataReady(int ADDR){
   //   // localWire->beginTransmission(ADDR);
@@ -126,14 +158,14 @@ namespace Ducers {
   void readPropaneTankPressure(float *data) {
     //AIN0
     // data[0] = float(ads1.getData(AIN0) - calibration1);
-    data[0] = ads1.getData(AIN0);
+    data[0] = getData(ADC1_ADDR, AIN0);
     data[1] = -1;
   }
 
   void readLOXTankPressure(float *data) {
     // AIN1
     // data[0] = float(ads1.readData(AIN1) - calibration1);
-    data[0] = ads1.getData(AIN1);
+    data[0] = getData(ADC1_ADDR, AIN1);
 
     data[1] = -1;
   }
@@ -141,7 +173,7 @@ namespace Ducers {
   void readPropaneInjectorPressure(float *data) {
     // AIN2
     // data[0] = float(ads1.readData(AIN2) - calibration1);
-    data[0] = ads1.getData(AIN2);
+    data[0] = getData(ADC1_ADDR, AIN2);
 
     data[1] = -1;
   }
@@ -149,28 +181,28 @@ namespace Ducers {
   void readLOXInjectorPressure(float *data) {
     //AIN3
     // data[0] = float(ads1.readData(AIN3) - calibration1);
-    data[0] = ads1.getData(AIN3);
+    data[0] = getData(ADC1_ADDR, AIN3);
     data[1] = -1;
   }
 
   void readPressurantTankPressure(float *data) {
     //AIN 0 on ADC 2
     // data[0] = float(ads2.readData(AIN0) - calibration2);
-    data[0] = ads2.getData(AIN0);
+    data[0] = getData(ADC2_ADDR, AIN0);
     data[1] = -1;
   }
 
   void readAllLowPressures(float *data) {
-    data[0] = float(ads1.getData(AIN1) - calibration1);
-    data[1] = float(ads1.getData(AIN0) - calibration1);
-    data[2] = float(ads1.getData(AIN3) - calibration1);
-    data[3] = float(ads1.getData(AIN2) - calibration1);
+    data[0] = float(getData(ADC1_ADDR, AIN1) - calibration1);
+    data[1] = float(getData(ADC1_ADDR, AIN0) - calibration1);
+    data[2] = float(getData(ADC1_ADDR, AIN3) - calibration1);
+    data[3] = float(getData(ADC1_ADDR, AIN2) - calibration1);
     data[4] = -1;
   }
 
   void readAllPressures(float *data) {
     readAllLowPressures(data);
-    data[4] = float(ads2.getData(AIN0) - calibration2);
+    data[4] = float(getData(ADC2_ADDR, AIN0) - calibration2);
     data[5] = -1;
   }
 }
