@@ -108,8 +108,8 @@ namespace Ducers {
     ads1.begin();
     ads2.begin();
 
-    ads1.setConversionMode(SINGLE_SHOT);
-    ads2.setConversionMode(SINGLE_SHOT);
+    ads1.setConversionMode(CONTINUOUS);
+    ads2.setConversionMode(CONTINUOUS);
 
     ads1.start();
     ads2.start();
@@ -120,8 +120,8 @@ namespace Ducers {
     ads1.setGain(GAIN_ONE);
     ads2.setGain(GAIN_ONE);
 
-    ads1.setDataRate(1000);
-    ads2.setDataRate(1000);
+    ads1.setDataRate(90);
+    ads2.setDataRate(90);
 
     // calibration1 = calibrateADC(ADC1_ADDR);
     // calibration2 = calibrateADC(ADC2_ADDR);
