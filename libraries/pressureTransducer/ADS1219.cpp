@@ -97,9 +97,9 @@ long ADS1219::readData(int channel) {
 	   break;
   }
   writeRegister(config);
-  if(singleShot){
+  // if(singleShot){
 	    start();
-  }
+  // }
 	while(digitalRead(data_ready)==1);
 	return readConversionResult();
 }
