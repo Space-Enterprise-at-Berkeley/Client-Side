@@ -159,14 +159,14 @@ namespace Ducers {
   void readPropaneTankPressure(float *data) {
     //AIN0
     // data[0] = float(ads1.getData(AIN0) - calibration1);
-    data[0] = ads1.readData(AIN0);
+    data[0] = ads1.readData(0);
     data[1] = -1;
   }
 
   void readLOXTankPressure(float *data) {
     // AIN1
     // data[0] = float(ads1.readData(AIN1) - calibration1);
-    data[0] = ads1.readData(AIN1);
+    data[0] = ads1.readData(1);
 
     data[1] = -1;
   }
@@ -174,7 +174,7 @@ namespace Ducers {
   void readPropaneInjectorPressure(float *data) {
     // AIN2
     // data[0] = float(ads1.readData(AIN2) - calibration1);
-    data[0] = ads1.readData(AIN2);
+    data[0] = ads1.readData(2);
 
     data[1] = -1;
   }
@@ -182,28 +182,28 @@ namespace Ducers {
   void readLOXInjectorPressure(float *data) {
     //AIN3
     // data[0] = float(ads1.readData(AIN3) - calibration1);
-    data[0] = ads1.readData(AIN3);
+    data[0] = ads1.readData(3);
     data[1] = -1;
   }
 
   void readPressurantTankPressure(float *data) {
     //AIN 0 on ADC 2
     // data[0] = float(ads2.readData(AIN0) - calibration2);
-    data[0] = ads2.readData(AIN0);
+    data[0] = ads2.readData(0);
     data[1] = -1;
   }
 
   void readAllLowPressures(float *data) {
-    // data[0] = float(getData(ADC1_ADDR, AIN1) - calibration1);
-    // data[1] = float(getData(ADC1_ADDR, AIN0) - calibration1);
-    // data[2] = float(getData(ADC1_ADDR, AIN3) - calibration1);
-    // data[3] = float(getData(ADC1_ADDR, AIN2) - calibration1);
+    data[0] = ads1.readData(1);
+    data[1] = ads1.readData(0);
+    data[2] = ads1.readData(3);
+    data[3] = ads1.readData(2);
     data[4] = -1;
   }
 
   void readAllPressures(float *data) {
     readAllLowPressures(data);
-    // data[4] = float(getData(ADC2_ADDR, AIN0) - calibration2);
+    data[4] = ads2.readData(0);
     data[5] = -1;
   }
 }
