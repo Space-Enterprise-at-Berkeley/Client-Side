@@ -240,6 +240,7 @@ namespace Solenoids {
   }
 
   int openLOX() {
+    Serial.println("open lox in lib");
     if(!loxArmed()){
       return -1;
     }
