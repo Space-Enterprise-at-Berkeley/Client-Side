@@ -79,25 +79,25 @@ namespace Ducers {
 
   void readPropaneTankPressure(float *data) {
     //AIN0
-    data[0] = ads1.readData(0) - calibration1;
+    data[0] = ads1.readData(1) - calibration1;
     data[1] = -1;
   }
 
   void readLOXTankPressure(float *data) {
     // AIN1
-    data[0] = ads1.readData(1) - calibration1;
+    data[0] = ads1.readData(0) - calibration1;
     data[1] = -1;
   }
 
   void readPropaneInjectorPressure(float *data) {
     // AIN2
-    data[0] = ads1.readData(2) - calibration1;
+    data[0] = ads1.readData(3) - calibration1;
     data[1] = -1;
   }
 
   void readLOXInjectorPressure(float *data) {
     //AIN3
-    data[0] = ads1.readData(3) - calibration1;
+    data[0] = ads1.readData(2) - calibration1;
     data[1] = -1;
   }
 
@@ -108,16 +108,19 @@ namespace Ducers {
   }
 
   void readAllLowPressures(float *data) {
-    data[0] = ads1.readData(1);// - calibration1;
-    data[1] = ads1.readData(0);// - calibration1;
-    data[2] = ads1.readData(3);// - calibration1;
-    data[3] = ads1.readData(2);// - calibration1;
+    ads2.readData(0);
+    data[0] = ads1.readData(0);// - calibration1;
+    data[1] = ads1.readData(1);// - calibration1;
+    data[2] = ads1.readData(2);// - calibration1;
+    data[3] = ads1.readData(3);// - calibration1;
     data[4] = -1;
   }
 
   void readAllPressures(float *data) {
     readAllLowPressures(data);
-    data[4] = ads2.getData(0x61); //- calibration2;
+    long temp = ads2.readData(0);
+    //Serial.println(temp);
+    data[4] = temp; //- calibration2;
     data[5] = -1;
   }
 
@@ -130,12 +133,13 @@ namespace Ducers {
       float tempRead;
 
   void readTemperatureData(float *data) {
-    rawRead = ads2.getData(0x81); // thermocouple on AIN1 of ADC2
-    Serial.println(rawRead);
+    ads2.readData(1);
+    rawRead = ads2.readData(1); // thermocouple on AIN1 of ADC2
+    // Serial.println(rawRead);
     // Serial.println(ads.readData(2));
     // Serial.println(ads.readData(3));
     voltageRead = (float) rawRead * (5.0 / pow(2,23));
-    Serial.println(voltageRead);
+    // Serial.println(voltageRead);
     tempRead = ((voltageRead - voltageOffset) * tempOverVoltageScale) + tempOffset;
     data[0] = tempRead;
     data[1] = -1;
