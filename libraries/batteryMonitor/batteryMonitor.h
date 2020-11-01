@@ -44,7 +44,7 @@ namespace batteryMonitor {
     readPowerConsumption(data);
     data[1] = data[0];
     data[0] = ina.readBusVoltage();
-    data[2] = energyConsumed;
+    data[2] = -1*ina.readShuntCurrent(); //wiring is flipped on pcb
     data[3] = -1;
   }
 
