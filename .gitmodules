@@ -4,3 +4,6 @@
 [submodule "libraries/Arduino-INA226"]
 	path = libraries/Arduino-INA226
 	url = git@github.com:jarzebski/Arduino-INA226.git
+[submodule "libraries/ADS1219"]
+	path = libraries/ADS1219
+	url = git@github.com:OM222O/ADS1219.git
