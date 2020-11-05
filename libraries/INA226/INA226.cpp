@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 bool INA226::begin(uint8_t address)
 {
-    //Wire.begin();
+    Wire.begin();
     inaAddress = address;
     return true;
 }

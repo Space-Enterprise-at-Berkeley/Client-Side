@@ -40,20 +40,12 @@
 #define VREF_INTERNAL			0x00
 #define VREF_EXTERNAL			0x01
 
-// #define conf_address 0x40
-// #define status_address 0x24
-// // ​
-// #define AIN0 0x61
-// #define AIN1 0x81
-// #define AIN2 0xA1
-// #define AIN3 0xC1
-
 typedef enum{
   ONE	= GAIN_ONE,
   FOUR	= GAIN_FOUR
 }adsGain_t;
 
-typedef enum{
+typedef enum {
   SINGLE_SHOT	= MODE_SINGLE_SHOT,
   CONTINUOUS	= MODE_CONTINUOUS
 }adsMode_t;
@@ -63,34 +55,35 @@ typedef enum{
   REF_EXTERNAL	= VREF_EXTERNAL
 }adsRef_t;
 
-class ADS1219  {
+class ADS1219 {
   protected:
 	uint8_t address;
+  TwoWire *localWire;
   public:
     // Constructor
-    ADS1219(int drdy, uint8_t addr = 0x40);
+    ADS1219(int drdy, uint8_t addr, TwoWire *wire);
 
     // Methods
-    long getData(uint8_t conf);
     void begin();
-    void start();
-  	void resetConfig();
-  	long readData(int channel);
-  	long readDifferential_0_1();
-  	long readDifferential_2_3();
-  	long readDifferential_1_2();
-  	long readShorted();
-  	void setGain(adsGain_t gain);
-  	void setDataRate(int rate);
-  	void setConversionMode(adsMode_t mode);
-  	void setVoltageReference(adsRef_t vref);
-	  void powerDown();
+	void resetConfig();
+	long readData(int channel);
+  long getData(uint8_t config);
+	long readDifferential_0_1();
+	long readDifferential_2_3();
+	long readDifferential_1_2();
+	long readShorted();
+	void setGain(adsGain_t gain);
+	void setDataRate(int rate);
+	void setConversionMode(adsMode_t mode);
+	void setVoltageReference(adsRef_t vref);
+	void powerDown();
   private:
-  	uint8_t readRegister(uint8_t reg);
-  	void writeRegister(uint8_t data);
-  	long readConversionResult();
-  	uint8_t config;
-  	boolean singleShot;
-  	int data_ready; //pin number
+	void start();
+	uint8_t readRegister(uint8_t reg);
+	void writeRegister(uint8_t data);
+	long readConversionResult();
+	uint8_t config;
+	boolean singleShot;
+	int data_ready;
 };
 #endif
