@@ -199,7 +199,7 @@ void ADS1219::setConversionMode(adsMode_t mode){
   config &= MODE_MASK;
   config |= mode;
   writeRegister(config);
-  if (mode == CONTINUOUS){
+  if (mode == MODE_CONTINUOUS){
 	  singleShot = false;
     start();
   } else {

@@ -57,8 +57,8 @@ namespace Ducers {
     ads1.begin();
     ads2.begin();
 
-    ads1.setConversionMode(CONTINUOUS);
-    ads2.setConversionMode(CONTINUOUS);
+    ads1.setConversionMode(MODE_SINGLE_SHOT);
+    ads2.setConversionMode(MODE_SINGLE_SHOT);
 
     ads1.setVoltageReference(REF_EXTERNAL);
     ads2.setVoltageReference(REF_EXTERNAL);
