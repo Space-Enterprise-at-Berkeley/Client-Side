@@ -63,6 +63,15 @@ namespace Solenoids {
     digitalWrite(HIGH_SOL_PIN, high_sol_state);
   }
 
+  void getAllStates(float *data){
+    data[0] = lox2_state;
+    data[1] = prop2_state;
+    data[2] = lox5_state;
+    data[3] = prop5_state;
+    data[4] = lox_gems_state;
+    data[5] = prop_gems_state;
+  }
+
   bool loxArmed() {
     return lox2_state == 1;
   }
