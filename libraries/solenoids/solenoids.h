@@ -240,9 +240,6 @@ namespace Solenoids {
   }
 
   int openLOX() {
-    if(!loxArmed()){
-      return -1;
-    }
     if (lox5_state == 0) {
       toggleLOX5Way();
     } else {
@@ -252,9 +249,6 @@ namespace Solenoids {
   }
 
   int closeLOX() {
-    if(!loxArmed()){ // it won't work if there's no pressure. ie even to close, needs to be armed.
-      return -1;
-    }
     if (lox5_state == 1) {
       toggleLOX5Way();
     } else {
@@ -264,9 +258,6 @@ namespace Solenoids {
   }
 
   int openPropane() {
-    if(!propArmed()) {
-      return -1;
-    }
     if (prop5_state == 0) {
       toggleProp5Way();
     } else {
@@ -276,9 +267,6 @@ namespace Solenoids {
   }
 
   int closePropane() {
-    if(!propArmed()){
-      return -1;
-    }
     if(prop5_state == 1){
       toggleProp5Way();
     } else {
@@ -288,18 +276,12 @@ namespace Solenoids {
   }
 
   int LAUNCH() {
-    if (!loxArmed() || !propArmed()){
-      return -1;
-    }
     openLOX();
     openPropane();
     return 1;
   }
 
   int endBurn() {
-    if (!loxArmed() || !propArmed()){
-      return -1;
-    }
     closeLOX();
     closePropane();
     return 1;

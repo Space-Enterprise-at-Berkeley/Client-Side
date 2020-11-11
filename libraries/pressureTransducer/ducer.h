@@ -57,8 +57,8 @@ namespace Ducers {
     ads1.begin();
     ads2.begin();
 
-    ads1.setConversionMode(CONTINUOUS);
-    ads2.setConversionMode(CONTINUOUS);
+    ads1.setConversionMode(SINGLE_SHOT);
+    ads2.setConversionMode(SINGLE_SHOT);
 
     ads1.setVoltageReference(REF_EXTERNAL);
     ads2.setVoltageReference(REF_EXTERNAL);
@@ -113,15 +113,15 @@ namespace Ducers {
     data[1] = ads1.readData(1);// - calibration1;
     data[2] = ads1.readData(2);// - calibration1;
     data[3] = ads1.readData(3);// - calibration1;
-    data[4] = -1;
+    // data[4] = -1;
+    return;
   }
 
   void readAllPressures(float *data) {
     readAllLowPressures(data);
-    long temp = ads2.readData(0);
-    //Serial.println(temp);
-    data[4] = temp; //- calibration2;
+    data[4] = ads2.readData(0); //- calibration2;
     data[5] = -1;
+    return;
   }
 
 
