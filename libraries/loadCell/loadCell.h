@@ -7,6 +7,8 @@
  * (c) 2018 Bogdan Necula
  *
 **/
+#include <HX711.h>
+
 namespace LoadCell {
 		HX711 _lc1;
 		HX711 _lc2;
@@ -15,18 +17,17 @@ namespace LoadCell {
 		int calibrationValue2;
 
 		#define DOUT1 2
-		#define SCK1 3
+		#define SCL1 3
 
 		#define DOUT2 4
-		#define SCK2 5
-
+		#define SCL2 5
 
     void init() {
-			_lc1.begin(DOUT1, SCK1);
+			_lc1.begin(DOUT1, SCL1);
 		  _lc1.set_scale(calibrationValue1); //This value is obtained by using the SparkFun_HX711_Calibration sketch
 		  _lc1.tare();	//Assuming there is no weight on the scale at start up, reset the scale to 0
 
-			_lc2.begin(DOUT2, SCK2);
+			_lc2.begin(DOUT2, SCL2);
 			_lc2.set_scale(calibrationValue2);
 			_lc2.tare();
 		}
@@ -36,7 +37,4 @@ namespace LoadCell {
 			data[1] = _lc2.get_units();
 			data[2] = -1;
 		}
-
 }
-
-#endif /* HX711_h */

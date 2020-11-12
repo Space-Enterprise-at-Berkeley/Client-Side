@@ -8,6 +8,10 @@
 
 #include <OneWire.h>
 
+#include <Adafruit_I2CDevice.h>
+#include <Adafruit_I2CRegister.h>
+#include "Adafruit_MCP9600.h"
+#include <Wire.h>
 
 using namespace std;
 
@@ -130,6 +134,18 @@ namespace Thermocouple {
       data[1] = -1;
     }
   // }
+
+  namespace Cryo {
+    #define CRYO_THERM_I2C_ADDRESS (0x67)
+    Adafruit_MCP9600 mcp;
+
+    void init() {
+      if (! mcp.begin(CRYO_THERM_I2C_ADDRESS)) {
+        Serial.println("Sensor not found");
+      }
+    }
+
+  }
 
 };
 #endif
