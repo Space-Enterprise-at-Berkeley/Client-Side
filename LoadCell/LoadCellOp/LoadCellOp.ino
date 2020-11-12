@@ -11,8 +11,8 @@
 
 #include "HX711.h" //This library can be obtained here http://librarymanager/All#Avia_HX711
 
-#define calibration_factor -3950.0 //This value is obtained using the SparkFun_HX711_Calibration sketch
-
+//#define calibration_factor -3950.0 // LC 1 This value is obtained using the SparkFun_HX711_Calibration sketch
+#define calibration_factor -14630 // LC2
 #define LOADCELL_DOUT_PIN  3
 #define LOADCELL_SCK_PIN  2
 
