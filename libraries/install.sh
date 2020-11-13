@@ -6,13 +6,11 @@ case "${unameOut}" in
          machine=Linux
          rm -rf ~/Arduino/libraries/Barometer ~/Arduino/libraries/GPS ~/Arduino/libraries/IMU ~/Arduino/libraries/loadCell ~/Arduino/libraries/pressureTransducer ~/Arduino/libraries/tempController ~/Arduino/libraries/thermocouple
          cp -rf * ~/Arduino/libraries/
-         echo "finished"
          ;;
     Darwin*)
       machine=Mac
       rm -rf ~/Documents/Arduino/libraries/Barometer ~/Documents/Arduino/libraries/GPS ~/Documents/Arduino/libraries/IMU ~/Documents/Arduino/libraries/loadCell ~/Documents/Arduino/libraries/pressureTransducer ~/Documents/Arduino/libraries/tempController ~/Documents/Arduino/libraries/thermocouple
       cp -rf * ~/Documents/Arduino/libraries/
-      echo "finished"
       ;;
     CYGWIN*|MINGW*)
         machine=Windows
@@ -23,4 +21,4 @@ case "${unameOut}" in
     *)
         machine="UNKNOWN:${unameOut}"
 esac
-echo ${machine}
+echo "Finished copying on" ${machine}
