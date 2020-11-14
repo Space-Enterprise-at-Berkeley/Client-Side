@@ -10,15 +10,15 @@ using namespace std;
 namespace Solenoids {
 
   // take this pin values on init, and put them in a config file with brain.
-  #define LOX_2_PIN 0
-  #define LOX_5_PIN 2
-  #define LOX_GEMS_PIN 4
+  #define LOX_2_PIN 2
+  #define LOX_5_PIN 4
+  #define LOX_GEMS_PIN 6
 
-  #define PROP_2_PIN 1
-  #define PROP_5_PIN 3
-  #define PROP_GEMS_PIN 5
+  #define PROP_2_PIN 3
+  #define PROP_5_PIN 5
+  #define PROP_GEMS_PIN 7
 
-  #define HIGH_SOL_PIN 6
+  #define HIGH_SOL_PIN 8
 
   int high_sol_state = 0;
 
