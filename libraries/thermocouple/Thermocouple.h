@@ -97,48 +97,48 @@ namespace Thermocouple {
     }
   }
 
-  namespace Analog { //TMP36
-    // calibration = 25 C at 750mV
-
-    int DTRDY_PIN = 28;
-    int RESET_PIN = 29;
-
-    // first 7 bits for Arduino Wire
-    uint8_t ADC2_ADDR = 0b1001000;
-
-    float tempOverVoltageScale = 1 / 0.01;
-    float voltageOffset = 0.75, tempOffset = 25; // 25 C = 0.450 V
-
-    long rawRead;
-    float voltageRead;
-    float tempRead;
-
-    ADS1219 ads(DTRDY_PIN, ADC2_ADDR, NULL);
-
-    void init() {
-      // ads.begin();
-
-      ads.setConversionMode(CONTINUOUS);
-
-      ads.setVoltageReference(REF_EXTERNAL);
-
-      ads.setGain(GAIN_ONE);
-
-      ads.setDataRate(90);
-    }
-
-    void readTemperatureData(float *data) {
-      rawRead = ads.readData(2); // thermocouple on AIN1 of ADC2
-      // Serial.println(rawRead);
-      // Serial.println(ads.readData(2));
-      // Serial.println(ads.readData(3));
-      voltageRead = (float) rawRead * (5.0 / pow(2,23));
-      Serial.println(voltageRead);
-      tempRead = ((voltageRead - voltageOffset) * tempOverVoltageScale) + tempOffset;
-      data[0] = tempRead;
-      data[1] = -1;
-    }
-  }
+  // namespace Analog { //TMP36
+  //   // calibration = 25 C at 750mV
+  //
+  //   int DTRDY_PIN = 28;
+  //   int RESET_PIN = 29;
+  //
+  //   // first 7 bits for Arduino Wire
+  //   uint8_t ADC2_ADDR = 0b1001000;
+  //
+  //   float tempOverVoltageScale = 1 / 0.01;
+  //   float voltageOffset = 0.75, tempOffset = 25; // 25 C = 0.450 V
+  //
+  //   long rawRead;
+  //   float voltageRead;
+  //   float tempRead;
+  //
+  //   ADS1219 ads(DTRDY_PIN, ADC2_ADDR, NULL);
+  //
+  //   void init() {
+  //     // ads.begin();
+  //
+  //     ads.setConversionMode(CONTINUOUS);
+  //
+  //     ads.setVoltageReference(REF_EXTERNAL);
+  //
+  //     ads.setGain(GAIN_ONE);
+  //
+  //     ads.setDataRate(90);
+  //   }
+  // 
+  //   void readTemperatureData(float *data) {
+  //     rawRead = ads.readData(2); // thermocouple on AIN1 of ADC2
+  //     // Serial.println(rawRead);
+  //     // Serial.println(ads.readData(2));
+  //     // Serial.println(ads.readData(3));
+  //     voltageRead = (float) rawRead * (5.0 / pow(2,23));
+  //     Serial.println(voltageRead);
+  //     tempRead = ((voltageRead - voltageOffset) * tempOverVoltageScale) + tempOffset;
+  //     data[0] = tempRead;
+  //     data[1] = -1;
+  //   }
+  // }
 
   namespace Cryo {
     #define CRYO_THERM_I2C_ADDRESS (0x67)
@@ -153,6 +153,7 @@ namespace Thermocouple {
       mcp.setThermocoupleType(MCP9600_TYPE_J);
       mcp.setFilterCoefficient(3);
       mcp.enable(true);
+      return 0;
     }
 
     void readCryoTemp(float *data) {
