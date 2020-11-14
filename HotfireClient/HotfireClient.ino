@@ -15,8 +15,8 @@ sensorInfo sensors[numSensors] = {
 float data_temp[6];
 
 #define BRAINSERIAL Serial2
-#define NUM_OW_THERMO 1
-float ow_temps[3] = {0, 0, 0};
+#define NUM_OW_THERMO 3
+float ow_temps[NUM_OW_THERMO] = {0, 0, 0};
 int curr_ow_thermo = 0;
 
 void setup() {
@@ -46,19 +46,14 @@ void loop() {
     Serial.println(packet);
   }
 
-  Thermocouple::OW::setSensor(curr_ow_thermo);
-  ow_temps[curr_ow_thermo] = Thermocouple::OW::readTemperatureData(data_temp);
+  // OW thermo couples not working yet.
 
-  curr_ow_thermo ++;
-  curr_ow_thermo %= NUM_OW_THERMO;
-  Serial.println(ow_temps[curr_ow_thermo]);
-  
-//  for (int i = 0; i < 6; i++){
-//    Serial.print(data[i]);
-//    Serial.print(", ");
-//  }
-//  Serial.println("");
-
+//  Thermocouple::OW::setSensor(curr_ow_thermo);
+//  ow_temps[curr_ow_thermo] = Thermocouple::OW::readTemperatureData(data_temp);
+//
+//  curr_ow_thermo ++;
+//  curr_ow_thermo %= NUM_OW_THERMO;
+//  Serial.println(ow_temps[curr_ow_thermo]);
 }
 
 void getData(int id, float *fdata){

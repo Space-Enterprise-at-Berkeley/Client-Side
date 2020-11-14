@@ -70,6 +70,7 @@ namespace Solenoids {
     data[3] = prop5_state;
     data[4] = lox_gems_state;
     data[5] = prop_gems_state;
+    data[6] = high_sol_state;
   }
 
   bool loxArmed() {
