@@ -7,7 +7,7 @@
 
 #ifndef __TEMP_CONTROLLER__
 #define __TEMP_CONTROLLER__
-#include <math.h>
+#include <cmath>
 #include "pid.h"
 
 using namespace std;
