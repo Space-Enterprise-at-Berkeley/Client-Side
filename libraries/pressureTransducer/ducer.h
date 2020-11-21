@@ -108,7 +108,7 @@ namespace Ducers {
   }
 
   void readAllLowPressures(float *data) {
-    ads2.readData(0);
+    //ads2.readData(0);
     data[0] = ads1.readData(0);// - calibration1;
     data[1] = ads1.readData(1);// - calibration1;
     data[2] = ads1.readData(2);// - calibration1;
@@ -132,9 +132,11 @@ namespace Ducers {
       float voltageRead;
       float tempRead;
 
-  void readTemperatureData(float *data) {
-    ads2.readData(1);
-    rawRead = ads2.readData(1); // thermocouple on AIN1 of ADC2
+  void readTemperatureData(float *data) { // FIGURE OUT WHICH IN THIS WILL BE ON THE PCB
+    //ads2.readData(1);
+    //ads1.readData(1);
+    //rawRead = ads2.readData(1); // thermocouple on AIN1 of ADC2
+    rawRead = ads1.readData(1);
     // Serial.println(rawRead);
     // Serial.println(ads.readData(2));
     // Serial.println(ads.readData(3));
