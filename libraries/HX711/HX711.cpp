@@ -61,21 +61,6 @@ uint8_t shiftInSlow(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder) {
 #define SHIFTIN_WITH_SPEED_SUPPORT(data,clock,order) shiftIn(data,clock,order)
 #endif
 
-loadCell::loadCell(byte dataPin, byte clockPin) { //shit I fucked up. Let's hope the I2c clock line works.
-  _lc = HX711();
-  init(dataPin, clockPin);
-}
-
-loadCell::init(byte dataPin, byte clockPin) {
-  _lc.begin(dataPin, clockPin);
-  _lc.set_scale(calibrationValue);
-  _lc.tare();
-}
-
-loadCell::readLoad(float * data) {
-  data[0] = _lc.get_units(1);
-  data[1] = -1;
-}
 
 HX711::HX711() {
 }
