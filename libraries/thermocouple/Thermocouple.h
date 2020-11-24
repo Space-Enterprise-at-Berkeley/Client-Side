@@ -126,7 +126,7 @@ namespace Thermocouple {
   //
   //     ads.setDataRate(90);
   //   }
-  // 
+  //
   //   void readTemperatureData(float *data) {
   //     rawRead = ads.readData(2); // thermocouple on AIN1 of ADC2
   //     // Serial.println(rawRead);
@@ -141,24 +141,49 @@ namespace Thermocouple {
   // }
 
   namespace Cryo {
-    #define CRYO_THERM_I2C_ADDRESS (0x67)
-    Adafruit_MCP9600 mcp;
+    #define CRYO_THERM_I2C_ADDRESS_1 (0x67)
+    #define CRYO_THERM_I2C_ADDRESS_2 (0x68)
+    #define CRYO_THERM_I2C_ADDRESS_3 (0x69)
+
+    Adafruit_MCP9600 mcp1;
+    Adafruit_MCP9600 mcp2;
+    Adafruit_MCP9600 mcp3;
+
 
     int init() {
-      if (!mcp.begin(CRYO_THERM_I2C_ADDRESS)) {
-        Serial.println("Sensor not found");
+      if (!mcp1.begin(CRYO_THERM_I2C_ADDRESS_1)) {
+        Serial.println("Sensor 1 not found");
         return -1;
       }
-      mcp.setADCresolution(MCP9600_ADCRESOLUTION_18);
-      mcp.setThermocoupleType(MCP9600_TYPE_J);
-      mcp.setFilterCoefficient(3);
-      mcp.enable(true);
+      mcp1.setADCresolution(MCP9600_ADCRESOLUTION_18);
+      mcp1.setThermocoupleType(MCP9600_TYPE_J);
+      mcp1.setFilterCoefficient(3);
+      mcp1.enable(true);
+
+      if (!mcp2.begin(CRYO_THERM_I2C_ADDRESS_1)) {
+        Serial.println("Sensor 2 not found");
+      }
+      mcp2.setADCresolution(MCP9600_ADCRESOLUTION_18);
+      mcp2.setThermocoupleType(MCP9600_TYPE_J);
+      mcp2.setFilterCoefficient(3);
+      mcp2.enable(true);
+
+      if (!mcp3.begin(CRYO_THERM_I2C_ADDRESS_1)) {
+        Serial.println("Sensor 3 not found");
+      }
+      mcp3.setADCresolution(MCP9600_ADCRESOLUTION_18);
+      mcp3.setThermocoupleType(MCP9600_TYPE_J);
+      mcp3.setFilterCoefficient(3);
+      mcp3.enable(true);
+
       return 0;
     }
 
-    void readCryoTemp(float *data) {
-      data[0] = mcp.readThermocouple();
-      data[1] = -1;
+    void readCryoTemps(float *data) {
+      data[0] = mcp1.readThermocouple();
+      data[1] = mcp2.readThermocouple();
+      data[2] = mcp3.readThermocouple();
+      data[3] = -1;
     }
 
   }
