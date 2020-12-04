@@ -19,7 +19,7 @@ using namespace std;
 namespace Thermocouple {
 
 
-  namespace OW {
+  namespace OW { //onewire
     int OW_DATA_PIN;
 
     byte sensorData[12];
@@ -141,52 +141,46 @@ namespace Thermocouple {
   // }
 
   namespace Cryo {
-    #define CRYO_THERM_I2C_ADDRESS_1 (0x67)
-    #define CRYO_THERM_I2C_ADDRESS_2 (0x68)
-    #define CRYO_THERM_I2C_ADDRESS_3 (0x69)
 
-    Adafruit_MCP9600 mcp1;
-    Adafruit_MCP9600 mcp2;
-    Adafruit_MCP9600 mcp3;
+    Adafruit_MCP9600 ** _cryo_amp_boards;
+    int * _addrs;
+    int _numSensors;
 
+    int init(int numSensors, int * addrs) { // assume that numSensors is < max Size of packet. Add some error checking here
+      _addrs = (int *)malloc(numSensors);
+      _cryo_amp_boards = (Adafruit_MCP9600 **)malloc(numSensors * sizeof(Adafruit_MCP9600));
 
-    int init() {
-      if (!mcp1.begin(CRYO_THERM_I2C_ADDRESS_1)) {
-        Serial.println("Sensor 1 not found");
-        return -1;
+      for (int i = 0; i < numSensors; i++) {
+        _addrs[i] = addrs[i];
+        _cryo_amp_boards[i] = new Adafruit_MCP9600();
+        if (!_cryo_amp_boards[i]->begin(addrs[i])) {
+          Serial.println("Error initializing cryo board at Addr 0x" + String(addrs[i], HEX));
+          return -1;
+        }
+
+        _cryo_amp_boards[i]->setADCresolution(MCP9600_ADCRESOLUTION_18);
+        _cryo_amp_boards[i]->setThermocoupleType(MCP9600_TYPE_J);
+        _cryo_amp_boards[i]->setFilterCoefficient(3);
+        _cryo_amp_boards[i]->enable(true);
       }
-      mcp1.setADCresolution(MCP9600_ADCRESOLUTION_18);
-      mcp1.setThermocoupleType(MCP9600_TYPE_J);
-      mcp1.setFilterCoefficient(3);
-      mcp1.enable(true);
-
-      if (!mcp2.begin(CRYO_THERM_I2C_ADDRESS_1)) {
-        Serial.println("Sensor 2 not found");
-      }
-      mcp2.setADCresolution(MCP9600_ADCRESOLUTION_18);
-      mcp2.setThermocoupleType(MCP9600_TYPE_J);
-      mcp2.setFilterCoefficient(3);
-      mcp2.enable(true);
-
-      if (!mcp3.begin(CRYO_THERM_I2C_ADDRESS_1)) {
-        Serial.println("Sensor 3 not found");
-      }
-      mcp3.setADCresolution(MCP9600_ADCRESOLUTION_18);
-      mcp3.setThermocoupleType(MCP9600_TYPE_J);
-      mcp3.setFilterCoefficient(3);
-      mcp3.enable(true);
 
       return 0;
     }
 
     void readCryoTemps(float *data) {
-      data[0] = mcp1.readThermocouple();
-      data[1] = mcp2.readThermocouple();
-      data[2] = mcp3.readThermocouple();
-      data[3] = -1;
+      for (int i = 0; i < _numSensors; i++) {
+        data[i] = _cryo_amp_boards[i]->readThermocouple();
+      }
+      data[_numSensors] = -1;
     }
 
+    int freeAllResources() {
+        free(_cryo_amp_boards);
+        free(_addrs);
+        return 0;
+    }
   }
 
-};
+}
+
 #endif
