@@ -147,7 +147,7 @@ namespace Thermocouple {
     int * _addrs;
     int _numSensors;
 
-    int init(int numSensors, int * addrs) { // assume that numSensors is < max Size of packet. Add some error checking here
+    int init(int numSensors, int * addrs, _themotype * types) { // assume that numSensors is < max Size of packet. Add some error checking here
       _addrs = (int *)malloc(numSensors);
       _cryo_amp_boards = (Adafruit_MCP9600 **)malloc(numSensors * sizeof(Adafruit_MCP9600));
 
@@ -163,7 +163,7 @@ namespace Thermocouple {
         }
 
         _cryo_amp_boards[i]->setADCresolution(MCP9600_ADCRESOLUTION_18);
-        _cryo_amp_boards[i]->setThermocoupleType(MCP9600_TYPE_J);
+        _cryo_amp_boards[i]->setThermocoupleType(types[i]);
         _cryo_amp_boards[i]->setFilterCoefficient(3);
         _cryo_amp_boards[i]->enable(true);
       }
